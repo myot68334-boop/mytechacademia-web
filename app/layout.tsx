@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/social-preview.png",
         width: 1200,
         height: 630,
         alt: "My Tech Academia social share preview",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     title: "My Tech Academia | Practical products for learning and AI",
     description:
       "Explore WorkJapaneseGO, ZayCho, and Tech Academia across one connected brand.",
-    images: ["/opengraph-image"],
+    images: ["/social-preview.png"],
   },
 };
 
