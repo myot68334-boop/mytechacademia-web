@@ -1,0 +1,7 @@
+** BUILD FAILED **
+
+
+The following build commands failed:
+	CompileC /Users/myothant/Library/Developer/Xcode/DerivedData/WorkJapaneseGO-abrrthdbrghptzcwronvugcyetkm/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/fmt.build/Objects-normal/arm64/format.o /Users/myothant/Documents/New\ project/work-japanese-go/ios/Pods/fmt/src/format.cc normal arm64 c++ com.apple.compilers.llvm.clang.1_0.compiler (in target 'fmt' from project 'Pods')
+	Building workspace WorkJapaneseGO with scheme WorkJapaneseGO and configuration Debug
+(2 failures)

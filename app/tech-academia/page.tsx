@@ -1,0 +1,163 @@
+import Link from "next/link";
+import { ScreenshotShowcase } from "../../components/screenshot-showcase";
+import { getProjectGallery } from "../../data/screenshots";
+import { getLang, withLang } from "../../lib/i18n";
+
+const copy = {
+  en: {
+    eyebrow: "AI Learning Platform",
+    body: "Tech Academia is the long-term AI learning platform vision inside the ecosystem. It is shaped around technical study, engineering learning, productivity support, and future voice-first tutoring experiences for serious learners.",
+    bullets: [
+      "Technical tutoring and AI assistance",
+      "Future-ready voice learning direction",
+      "Scalable platform vision for serious learners",
+    ],
+    roadmap: "See the Roadmap",
+    explore: "Explore Ecosystem",
+    bestFor: "Best For",
+    bestTitle: "One future platform for deep learning support",
+    bestBody: "Built for students, technical learners, engineers, and users who want a structured AI-powered study environment that can grow with them over time.",
+    screens: "Screenshots",
+    screensTitle: "Dashboard and session concept visuals",
+    screensLead: "Tech Academia is still at the platform-vision stage, so these polished concept visuals map the dashboard and study-session direction until full product captures are available.",
+    features: [
+      ["Technical learning core", "Architecture, engineering, BIM, quantity survey, math, and physics can sit inside one AI support layer."],
+      ["Mode-based experience", "Teacher mode, coach mode, quiz mode, and deep explanation mode fit naturally into the roadmap."],
+      ["Voice-ready future", "The product direction already expects real-time voice, multilingual response, and session-based help."],
+      ["Platform-level ambition", "Built as a future umbrella product that can support mobile, web, and bot channels together."],
+    ],
+    ctaTitle: "Want to shape the future of Tech Academia?",
+    ctaBody: "Reach out if you want to discuss platform scope, MVP strategy, product narrative, or the long-term AI learning direction under the My Tech Academia brand.",
+    cta: "Discuss the Platform",
+  },
+  ja: {
+    eyebrow: "AI学習プラットフォーム",
+    body: "Tech Academia は、このエコシステムの中で長期的に育てていく AI 学習プラットフォーム構想です。技術学習、エンジニアリング支援、生産性向上、将来の音声中心チュータリング体験をひとつの流れで支えられるよう設計されています。",
+    bullets: [
+      "技術チュータリングと AI 支援",
+      "音声学習へ広がる将来設計",
+      "本格的な学習者に向けた拡張性の高い基盤",
+    ],
+    roadmap: "ロードマップを見る",
+    explore: "エコシステムを見る",
+    bestFor: "おすすめ対象",
+    bestTitle: "深い学びを支える、将来の統合型プラットフォーム",
+    bestBody: "学生、技術学習者、エンジニア、そして長く使える AI 学習環境を求める人のために設計されています。",
+    screens: "スクリーンショット",
+    screensTitle: "ダッシュボードと学習セッションの構想ビジュアル",
+    screensLead: "Tech Academia はまだ構想段階のため、ここでは将来のダッシュボードや学習セッションの方向性を伝えるコンセプトビジュアルを掲載しています。",
+    features: [
+      ["技術学習の核", "建築、工学、BIM、積算、数学、物理をひとつの AI レイヤーで支える構想です。"],
+      ["モード別の学習体験", "Teacher mode、Coach mode、Quiz mode、Deep explanation mode などを自然に組み込める設計です。"],
+      ["音声対応の未来", "リアルタイム音声、多言語応答、セッション型支援へ広げていける方向性を見据えています。"],
+      ["プラットフォームとしての拡張性", "モバイル、Web、ボットをまたいで成長できる将来の中核プロダクトを目指しています。"],
+    ],
+    ctaTitle: "Tech Academia の将来像を一緒に形にしませんか？",
+    ctaBody: "プラットフォームの範囲、MVP戦略、プロダクトストーリー、長期的な AI 学習の方向性について話したい方はぜひご連絡ください。",
+    cta: "プラットフォームについて相談する",
+  },
+  my: {
+    eyebrow: "AI သင်ယူမှုပလက်ဖောင်း",
+    body: "Tech Academia သည် ecosystem အတွင်း ရေရှည်တည်ဆောက်ဖော်ဆောင်မည့် AI learning platform vision ဖြစ်ပါသည်။ Technical study၊ engineering learning၊ productivity support နှင့် နောင်တွင် voice-first tutoring experience အထိ ချဲ့ထွင်နိုင်သော platform direction ကို အခြေခံထားပါသည်။",
+    bullets: [
+      "Technical tutoring နှင့် AI-assisted learning support",
+      "Voice-based learning experience သို့ ချဲ့ထွင်နိုင်သော future-ready direction",
+      "Serious learners များအတွက် scale လုပ်နိုင်သော platform vision",
+    ],
+    roadmap: "လမ်းပြမြေပုံအကြောင်း ဆွေးနွေးရန်",
+    explore: "ထုတ်ကုန်စနစ်ကြည့်ရန်",
+    bestFor: "အသုံးပြုရန် သင့်တော်သူများ",
+    bestTitle: "အနာဂတ်တွင် in-depth learning support ပေးနိုင်မည့် integrated platform",
+    bestBody: "ကျောင်းသားများ၊ technical learner များ၊ engineer များနှင့် ရေရှည်အသုံးပြုနိုင်သော structured AI-powered study environment ကို လိုအပ်သူများအတွက် ရည်ရွယ်ထားပါသည်။",
+    screens: "မြင်ကွင်းများ",
+    screensTitle: "dashboard နှင့် learning session concept visuals",
+    screensLead: "Tech Academia သည် လက်ရှိတွင် platform-vision stage တွင် ရှိနေသေးသောကြောင့် full product captures မရှိသေးချိန်အတွက် dashboard direction နှင့် study-session structure ကို ပြသသော polished concept visuals များကို အသုံးပြုထားပါသည်။",
+    features: [
+      ["Technical learning core", "Architecture၊ engineering၊ BIM၊ quantity survey၊ math နှင့် physics ကို AI layer တစ်ခုအောက်တွင် support ပေးနိုင်ရန် ရည်ရွယ်ထားပါသည်။"],
+      ["Mode-based experience", "Teacher mode၊ coach mode၊ quiz mode နှင့် deep explanation mode တို့ကို coherent learning flow အတွင်း ထည့်သွင်းအသုံးပြုနိုင်ရန် စီစဉ်ထားပါသည်။"],
+      ["Voice-ready future", "Real-time voice၊ multilingual response နှင့် session-based help experience များကို future direction အဖြစ် စဉ်းစားထားပါသည်။"],
+      ["Platform-scale ambition", "mobile၊ web နှင့် bot channels များကို တစ်ခုတည်းသော umbrella product structure အောက်တွင် ချိတ်ဆက်နိုင်ရန် တည်ဆောက်ထားပါသည်။"],
+    ],
+    ctaTitle: "Tech Academia ၏ အနာဂတ် platform direction ကို အတူတကွ ပုံဖော်လိုပါသလား",
+    ctaBody: "platform scope၊ MVP strategy၊ product narrative နှင့် ရေရှည် AI learning direction များအကြောင်း My Tech Academia brand အောက်တွင် ဆွေးနွေးနိုင်ပါသည်။",
+    cta: "ပလက်ဖောင်းအကြောင်း ဆွေးနွေးရန်",
+  },
+} as const;
+
+export default async function TechAcademiaPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ lang?: string | string[] }>;
+}) {
+  const params = searchParams ? await searchParams : undefined;
+  const lang = getLang(params?.lang);
+  const t = copy[lang];
+  const gallery = getProjectGallery(lang);
+  return (
+    <main>
+      <section className="project-hero">
+        <div className="container page-grid">
+          <section className="copy-block page-hero-copy page-hero-copy--primary">
+            <div className="eyebrow">{t.eyebrow}</div>
+            <h1>Tech Academia</h1>
+            <p>{t.body}</p>
+            <ul className="clean-list">
+              {t.bullets.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="hero-actions">
+              <Link href={withLang("/contact", lang)} className="cta-chip cta-chip--solid">
+                {t.roadmap}
+              </Link>
+              <Link href={withLang("/projects", lang)} className="cta-chip cta-chip--ghost">
+                {t.explore}
+              </Link>
+            </div>
+          </section>
+          <aside className="copy-block page-hero-copy page-hero-copy--secondary">
+            <span className="project-tag">{t.bestFor}</span>
+            <h3>{t.bestTitle}</h3>
+            <p>{t.bestBody}</p>
+          </aside>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">{t.screens}</div>
+              <h2 className="section-title">{t.screensTitle}</h2>
+            </div>
+            <p className="section-lead">{t.screensLead}</p>
+          </div>
+          <ScreenshotShowcase items={gallery.techAcademia} compact />
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container feature-grid">
+          {t.features.map(([title, body]) => (
+            <article key={title} className="feature-card">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="contact-band reveal-band reveal-band--secondary">
+            <h2>{t.ctaTitle}</h2>
+            <p>{t.ctaBody}</p>
+            <Link href={withLang("/contact", lang)} className="cta-chip cta-chip--ghost">
+              {t.cta}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
