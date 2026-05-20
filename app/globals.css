@@ -942,6 +942,195 @@ a {
   object-fit: contain;
 }
 
+.ai-team {
+  display: grid;
+  gap: 20px;
+}
+
+.ai-team-board {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.ai-team-coordinator,
+.ai-agent-card,
+.ai-team-checklist {
+  border: 1px solid rgba(196, 224, 255, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07)),
+    rgba(8, 16, 31, 0.46);
+  box-shadow: 0 22px 56px rgba(7, 12, 28, 0.22);
+  backdrop-filter: blur(14px);
+}
+
+.ai-team-coordinator {
+  position: relative;
+  overflow: hidden;
+  padding: 26px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(80, 172, 255, 0.22), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08)),
+    rgba(8, 16, 31, 0.58);
+}
+
+.ai-team-coordinator::after {
+  content: "";
+  position: absolute;
+  inset: auto 24px 24px 24px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4ba8ff, #7a78ff, #62d5ff);
+}
+
+.ai-team-node-label,
+.ai-agent-card__index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  color: #f8fbff;
+  background: rgba(111, 184, 255, 0.16);
+  border: 1px solid rgba(176, 224, 255, 0.22);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.ai-team-coordinator h3,
+.ai-agent-card h3,
+.ai-team-checklist h3 {
+  margin: 18px 0 10px;
+  color: #f8fbff;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.ai-team-coordinator p,
+.ai-agent-card p,
+.ai-team-checklist p {
+  margin: 0;
+  color: rgba(232, 241, 255, 0.84);
+  line-height: 1.72;
+}
+
+.ai-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ai-agent-card {
+  min-height: 260px;
+  padding: 18px;
+  border-radius: 20px;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  animation: staggerReveal 720ms cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--agent-index) * 70ms) both;
+}
+
+.ai-agent-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(151, 215, 255, 0.24);
+  box-shadow: 0 28px 68px rgba(7, 14, 32, 0.32);
+}
+
+.ai-agent-card h3 {
+  font-size: 20px;
+}
+
+.ai-agent-card p {
+  font-size: 15px;
+}
+
+.ai-team-flow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  align-items: stretch;
+}
+
+.ai-flow-step {
+  position: relative;
+  min-height: 118px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(186, 220, 255, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.06)),
+    rgba(8, 16, 31, 0.4);
+  color: #f6fbff;
+}
+
+.ai-flow-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  width: 10px;
+  height: 1px;
+  background: rgba(142, 211, 255, 0.42);
+}
+
+.ai-flow-step span {
+  display: block;
+  margin-bottom: 12px;
+  color: #8fd3ff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.ai-flow-step strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.ai-team-checklist {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 24px;
+}
+
+.ai-team-checklist h3 {
+  margin: 0;
+}
+
+.ai-team-checklist__items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ai-check-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(186, 220, 255, 0.13);
+}
+
+.ai-check-item span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  color: #071120;
+  background: #8fd3ff;
+  font-weight: 900;
+}
+
 .deploy-strip {
   display: flex;
   align-items: center;
@@ -1312,6 +1501,9 @@ ul.clean-list li::marker {
   .projects-grid,
   .feature-grid,
   .updates-grid,
+  .ai-team-board,
+  .ai-team-flow,
+  .ai-team-checklist,
   .trust-bar,
   .screens-grid,
   .screens-grid--compact,
@@ -1356,6 +1548,9 @@ ul.clean-list li::marker {
   .project-card,
   .feature-card,
   .update-card,
+  .ai-team-coordinator,
+  .ai-agent-card,
+  .ai-team-checklist,
   .screen-card,
   .contact-band,
   .deploy-strip,
@@ -1389,6 +1584,28 @@ ul.clean-list li::marker {
 
   .project-thumb {
     min-height: 168px;
+  }
+
+  .ai-agent-grid,
+  .ai-team-checklist__items {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-agent-card {
+    min-height: auto;
+  }
+
+  .ai-flow-step {
+    min-height: auto;
+  }
+
+  .ai-flow-step:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    left: 24px;
+    bottom: -10px;
+    width: 1px;
+    height: 10px;
   }
 
   .hero-showcase {
@@ -1546,6 +1763,7 @@ ul.clean-list li::marker {
   .project-card,
   .feature-card,
   .update-card,
+  .ai-agent-card,
   .screen-card {
     transition: none;
   }
