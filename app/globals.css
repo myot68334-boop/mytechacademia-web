@@ -944,13 +944,13 @@ a {
 
 .ai-team {
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
 
 .ai-team-board {
   display: grid;
-  grid-template-columns: 0.8fr 1.4fr;
-  gap: 18px;
+  grid-template-columns: 0.84fr 1.36fr;
+  gap: 22px;
   align-items: stretch;
 }
 
@@ -968,7 +968,7 @@ a {
 .ai-team-coordinator {
   position: relative;
   overflow: hidden;
-  padding: 26px;
+  padding: 30px;
   border-radius: 24px;
   background:
     radial-gradient(circle at top left, rgba(80, 172, 255, 0.22), transparent 34%),
@@ -1004,7 +1004,7 @@ a {
 .ai-team-coordinator h3,
 .ai-agent-card h3,
 .ai-team-checklist h3 {
-  margin: 18px 0 10px;
+  margin: 20px 0 12px;
   color: #f8fbff;
   font-size: 24px;
   line-height: 1.2;
@@ -1015,18 +1015,18 @@ a {
 .ai-team-checklist p {
   margin: 0;
   color: rgba(232, 241, 255, 0.84);
-  line-height: 1.72;
+  line-height: 1.78;
 }
 
 .ai-agent-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .ai-agent-card {
-  min-height: 260px;
-  padding: 18px;
+  min-height: 276px;
+  padding: 22px 20px 20px;
   border-radius: 20px;
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
   animation: staggerReveal 720ms cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--agent-index) * 70ms) both;
@@ -1043,20 +1043,20 @@ a {
 }
 
 .ai-agent-card p {
-  font-size: 15px;
+  font-size: 15.5px;
 }
 
 .ai-team-flow {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
   align-items: stretch;
 }
 
 .ai-flow-step {
   position: relative;
-  min-height: 118px;
-  padding: 16px;
+  min-height: 126px;
+  padding: 18px;
   border-radius: 18px;
   border: 1px solid rgba(186, 220, 255, 0.16);
   background:
@@ -1093,8 +1093,8 @@ a {
 .ai-team-checklist {
   display: grid;
   grid-template-columns: 0.7fr 1.3fr;
-  gap: 18px;
-  padding: 22px;
+  gap: 22px;
+  padding: 26px;
   border-radius: 24px;
 }
 
@@ -1105,15 +1105,15 @@ a {
 .ai-team-checklist__items {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .ai-check-item {
   display: grid;
   grid-template-columns: 34px 1fr;
-  gap: 10px;
+  gap: 12px;
   align-items: start;
-  padding: 14px;
+  padding: 16px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(186, 220, 255, 0.13);
