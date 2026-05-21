@@ -839,12 +839,18 @@ a {
 }
 
 .section--services {
-  padding-top: 12px;
+  padding-top: 40px;
+}
+
+.section--services .section-title {
+  max-width: 12ch;
 }
 
 .services-section-meta {
   display: grid;
-  gap: 14px;
+  gap: 18px;
+  align-self: end;
+  padding-top: 18px;
   justify-items: end;
 }
 
@@ -864,6 +870,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  margin-top: 4px;
 }
 
 .services-grid {
@@ -1732,6 +1739,7 @@ ul.clean-list li::marker {
 
   .services-section-meta {
     justify-items: start;
+    padding-top: 0;
     width: 100%;
   }
 
