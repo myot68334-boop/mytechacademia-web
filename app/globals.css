@@ -862,10 +862,24 @@ a {
 }
 
 .section--services--my .section-title {
-  max-width: 8.5ch;
-  font-size: clamp(30px, 4vw, 42px);
-  line-height: 1.18;
+  max-width: min(100%, 19rem);
+  font-size: clamp(24px, 2.7vw, 32px);
+  line-height: 1.5;
   letter-spacing: 0;
+}
+
+.section--services--my .section-head {
+  gap: 32px;
+}
+
+.section--services--my .section-head > :first-child {
+  flex: 0 1 540px;
+  min-width: 450px;
+}
+
+.section--services--my .services-section-meta {
+  flex: 1 1 420px;
+  padding-top: 12px;
 }
 
 .services-section-meta {
