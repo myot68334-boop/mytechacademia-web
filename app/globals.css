@@ -839,18 +839,40 @@ a {
 }
 
 .section--services {
-  padding-top: 40px;
+  padding-top: 56px;
+}
+
+.section--services .section-head {
+  align-items: start;
+  gap: 24px;
 }
 
 .section--services .section-title {
   max-width: 12ch;
 }
 
+.section--services--en .section-title {
+  max-width: 13ch;
+}
+
+.section--services--ja .section-title {
+  max-width: 14ch;
+  font-size: clamp(32px, 4.1vw, 46px);
+  line-height: 1.12;
+}
+
+.section--services--my .section-title {
+  max-width: 8.5ch;
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
 .services-section-meta {
   display: grid;
   gap: 18px;
-  align-self: end;
-  padding-top: 18px;
+  align-self: start;
+  padding-top: 24px;
   justify-items: end;
 }
 
@@ -870,7 +892,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 .services-grid {
