@@ -45,6 +45,53 @@ const copy = {
       ["AI-powered productivity", "Assistive workflows that improve clarity, speed, and learning outcomes."],
       ["Technical education platforms", "Long-term product ideas for engineering learning and digital skill growth."],
     ],
+    servicesEyebrow: "AI Website Support",
+    servicesTitle: "Practical AI website support for small businesses",
+    servicesLead:
+      "My Tech Academia helps small businesses clarify website messaging, improve multilingual communication, strengthen SEO basics, and introduce practical AI-assisted workflows in English, Japanese, and Burmese.",
+    servicesStart: "Starting from ¥10,000",
+    servicesWhoFor:
+      "Best for small businesses, educators, consultants, multilingual service providers, and founders who want reliable website support without building a full in-house content team.",
+    services: [
+      {
+        name: "Starter",
+        price: "¥10,000",
+        body: "A focused one-page improvement package for clearer messaging, stronger CTA wording, and a more confident first impression.",
+        bullets: [
+          "1 page copy rewrite",
+          "CTA improvement",
+          "Basic SEO title and meta description",
+          "English / Japanese / Burmese support",
+        ],
+        cta: "Start with Starter",
+      },
+      {
+        name: "Growth",
+        price: "¥15,000",
+        body: "A multi-page website polish package for businesses that want stronger structure, clearer communication, and cleaner service or product messaging.",
+        bullets: [
+          "2 to 3 page rewrite",
+          "Homepage and service page improvement",
+          "SEO copy improvement",
+          "Messaging clarity review",
+        ],
+        cta: "Choose Growth",
+      },
+      {
+        name: "Monthly AI Web Support",
+        price: "¥30,000 / month",
+        body: "Ongoing monthly support for businesses that want regular website updates, multilingual content help, SEO checks, and practical AI-assisted operations.",
+        bullets: [
+          "Monthly page improvements",
+          "Search Console follow-up",
+          "4 social copy drafts",
+          "Multilingual website support",
+          "QA and content review",
+        ],
+        cta: "Request Monthly Support",
+        featured: true,
+      },
+    ],
     updatesEyebrow: "Latest Updates",
     updatesTitle: "What is moving across the ecosystem",
     updates: [
@@ -101,6 +148,53 @@ const copy = {
       ["ECシステム", "利用者が迷わず選び、納得して購入しやすいストア導線。"],
       ["AI活用の生産性向上", "分かりやすさ、スピード、学習効率を支える実務的な支援ワークフロー。"],
       ["技術教育プラットフォーム", "工学学習とデジタルスキルの成長を支える長期的な基盤構想。"],
+    ],
+    servicesEyebrow: "AI Web サポート",
+    servicesTitle: "小規模事業者向けの実用的なAI Web支援",
+    servicesLead:
+      "My Tech Academia は、英語・日本語・ビルマ語に対応しながら、Webサイトの文章改善、多言語での伝わり方の整理、SEOの基本整備、AIを活用した実務フロー支援を実用的にご提供します。",
+    servicesStart: "料金は ¥10,000 から",
+    servicesWhoFor:
+      "小規模事業者、教育サービス、コンサルタント、多言語対応が必要なサービス業、少人数で継続的にWeb運用を行いたい事業者に適しています。",
+    services: [
+      {
+        name: "Starter",
+        price: "¥10,000",
+        body: "1ページを対象に、伝わりやすい文章、CTA改善、第一印象の整理に絞って整える小規模パッケージです。",
+        bullets: [
+          "1ページの文章改善",
+          "CTA文言の調整",
+          "基本的なタイトル / メタディスクリプション整備",
+          "英語 / 日本語 / ビルマ語対応",
+        ],
+        cta: "Starter を相談する",
+      },
+      {
+        name: "Growth",
+        price: "¥15,000",
+        body: "複数ページを対象に、構成の整理、訴求の明確化、サービス説明の磨き込みを進める改善パッケージです。",
+        bullets: [
+          "2〜3ページの改善",
+          "ホームページとサービスページの改善",
+          "SEO向け文章の見直し",
+          "メッセージの明確化レビュー",
+        ],
+        cta: "Growth を選ぶ",
+      },
+      {
+        name: "Monthly AI Web Support",
+        price: "¥30,000 / 月",
+        body: "定期的な更新、SEO確認、多言語サポート、AIを活用した運用補助をまとめて支える月額支援プランです。",
+        bullets: [
+          "月次ページ改善",
+          "Search Console の確認と簡易フォロー",
+          "SNS用テキストを月4本作成",
+          "多言語Web運用サポート",
+          "QA と文章レビュー",
+        ],
+        cta: "月額支援を相談する",
+        featured: true,
+      },
     ],
     updatesEyebrow: "最新アップデート",
     updatesTitle: "エコシステム全体で進んでいること",
@@ -182,6 +276,53 @@ const copy = {
       ["အီလက်ထရောနစ်ကုန်သွယ်မှုစနစ်", "အသုံးပြုသူများ ရွေးချယ်မှုလွယ်ကူစေရန်နှင့် ယုံကြည်စိတ်ချစွာ ဝယ်ယူနိုင်စေရန် စီမံထားသော စတိုးလမ်းကြောင်းများ။"],
       ["AI ဖြင့် လုပ်ငန်းစွမ်းဆောင်ရည်တိုးတက်စေခြင်း", "ရှင်းလင်းမှု၊ လုပ်ဆောင်မှုမြန်ဆန်မှုနှင့် သင်ယူမှုထိရောက်မှု တိုးတက်စေရန် ရည်ရွယ်သော လုပ်ငန်းလမ်းကြောင်းများ။"],
       ["နည်းပညာပညာရေးပလက်ဖောင်း", "အင်ဂျင်နီယာသင်ယူမှုနှင့် ဒစ်ဂျစ်တယ်ကျွမ်းကျင်မှုတိုးတက်မှုကို ရေရှည်အခြေပြု အထောက်အပံ့ပေးနိုင်ရန် ရည်ရွယ်ထားသော ပလက်ဖောင်းဦးတည်ချက်။"],
+    ],
+    servicesEyebrow: "AI Website Support",
+    servicesTitle: "အသေးစားလုပ်ငန်းများအတွက် လက်တွေ့အသုံးဝင်သော AI website support",
+    servicesLead:
+      "My Tech Academia သည် ဝဘ်ဆိုက်စာသားကို ပိုရှင်းလင်းထိရောက်အောင် ပြန်လည်ညှိနှိုင်းပေးခြင်း၊ ဘာသာစုံမက်ဆေ့ချ်တင်ဆက်မှုကို တစ်ပြေးညီစနစ်တကျပြုလုပ်ပေးခြင်း၊ SEO အခြေခံအဆင်သင့်ပြုလုပ်ပေးခြင်းနှင့် AI အထောက်အကူပြု workflow များကို အင်္ဂလိပ်၊ ဂျပန်နှင့် မြန်မာဘာသာဖြင့် လက်တွေ့အသုံးဝင်အောင် ပံ့ပိုးပေးပါသည်။",
+    servicesStart: "အစပြုဈေးနှုန်း ¥10,000 မှ",
+    servicesWhoFor:
+      "အသေးစားလုပ်ငန်းများ၊ ပညာရေးဝန်ဆောင်မှုများ၊ အကြံပေးလုပ်ငန်းများ၊ ဘာသာစုံအသုံးပြုရသော ဝန်ဆောင်မှုလုပ်ငန်းများနှင့် in-house content team မရှိသေးဘဲ တစ်ပြေးညီ website support လိုအပ်သော founder များအတွက် သင့်တော်ပါသည်။",
+    services: [
+      {
+        name: "Starter",
+        price: "¥10,000",
+        body: "စာမျက်နှာတစ်ခုတည်းကို အဓိကထားပြီး စာသားရှင်းလင်းမှု၊ CTA ပြန်ညှိမှုနှင့် ပထမမြင်ကွင်း ပိုမိုယုံကြည်ဖွယ်ကောင်းစေရန် ပြင်ဆင်ပေးသည့် package ဖြစ်ပါသည်။",
+        bullets: [
+          "page တစ်ခု copy rewrite",
+          "CTA စာသားပြန်ညှိခြင်း",
+          "basic SEO title / meta description",
+          "English / Japanese / Burmese support",
+        ],
+        cta: "Starter ကိုစတင်ရန်",
+      },
+      {
+        name: "Growth",
+        price: "¥15,000",
+        body: "page 2 မှ 3 ခုအထိကို တပြိုင်နက်ပြင်ဆင်ကာ homepage structure၊ service messaging နှင့် SEO copy quality ကို ပိုမိုတိုးတက်စေသော package ဖြစ်ပါသည်။",
+        bullets: [
+          "page 2 မှ 3 ခု ပြင်ဆင်ခြင်း",
+          "homepage နှင့် service page polish",
+          "SEO copy improvement",
+          "message clarity review",
+        ],
+        cta: "Growth ကိုရွေးရန်",
+      },
+      {
+        name: "Monthly AI Web Support",
+        price: "¥30,000 / လ",
+        body: "လစဉ် page update များ၊ SEO check များ၊ ဘာသာစုံ content support နှင့် AI-assisted website workflow ကို ဆက်တိုက်ပံ့ပိုးပေးသည့် လစဉ်ပံ့ပိုးမှု package ဖြစ်ပါသည်။",
+        bullets: [
+          "လစဉ် page improvements",
+          "Search Console follow-up",
+          "social copy draft 4 ခု",
+          "multilingual website support",
+          "QA နှင့် content review",
+        ],
+        cta: "Monthly Support မေးမြန်းရန်",
+        featured: true,
+      },
     ],
     updatesEyebrow: "လတ်တလောအခြေအနေများ",
     updatesTitle: "ချိတ်ဆက်ထုတ်ကုန်စနစ်အတွင်း လက်ရှိဆောင်ရွက်လျက်ရှိသော အဓိကအလုပ်များ",
@@ -347,6 +488,51 @@ export default async function HomePage({
                 <p>{body}</p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--services">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">{t.servicesEyebrow}</div>
+              <h2 className="section-title">{t.servicesTitle}</h2>
+            </div>
+            <div className="services-section-meta">
+              <p className="section-lead">{t.servicesLead}</p>
+              <span className="services-start-note">{t.servicesStart}</span>
+            </div>
+          </div>
+          <div className="services-grid">
+            {t.services.map((service) => (
+              <article
+                key={service.name}
+                className={`service-card${"featured" in service && service.featured ? " service-card--highlight" : ""}`}
+              >
+                <div className="service-card__top">
+                  <div>
+                    <div className="project-tag">Service Package</div>
+                    <h3>{service.name}</h3>
+                  </div>
+                  <div className="service-price">{service.price}</div>
+                </div>
+                <p>{service.body}</p>
+                <ul className="service-list">
+                  {service.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+                <div className="service-card__footer">
+                  <Link href={withLang("/contact", lang)} className="cta-chip cta-chip--ghost">
+                    {service.cta}
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="copy-block services-copy-block">
+            <strong>{t.servicesWhoFor}</strong>
           </div>
         </div>
       </section>
