@@ -61,6 +61,7 @@ const initialMessages: Message[] = [
 ];
 
 const CHAT_REQUEST_TIMEOUT_MS = 30000;
+const MAX_MEMORY_MESSAGES = 20;
 
 function getTimestamp() {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -90,6 +91,7 @@ function toSavedMessages(messages: Message[]): ChatMessage[] {
 function toApiHistory(messages: Message[]) {
   return messages
     .filter((message) => message.id !== "welcome")
+    .slice(-MAX_MEMORY_MESSAGES)
     .map((message) => ({
       role: message.role,
       content: message.content,
@@ -250,6 +252,16 @@ export default function TechAcademiaChatPage() {
   };
 
   const handleRestartQuiz = () => {
+    if (submitting) return;
+
+    setActiveChatId(null);
+    setMessages(initialMessages);
+    setQuizScore({ correct: 0, total: 0 });
+    setSaveStatus("idle");
+    setError(null);
+  };
+
+  const handleClearConversation = () => {
     if (submitting) return;
 
     setActiveChatId(null);
@@ -518,6 +530,14 @@ export default function TechAcademiaChatPage() {
                             : "No saved chat"}
                     </span>
                   </div>
+                  <button
+                    className="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:border-aurora-300/60 hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-60"
+                    type="button"
+                    onClick={handleClearConversation}
+                    disabled={submitting}
+                  >
+                    Clear Conversation
+                  </button>
 
                   <div className="rounded-2xl border border-white/10 bg-midnight-900/60 px-4 py-4">
                     <div className="flex items-center justify-between gap-3">

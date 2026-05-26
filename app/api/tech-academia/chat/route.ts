@@ -6,7 +6,7 @@ export const runtime = 'nodejs';
 
 const CHAT_MODES = ['teacher', 'engineerMentor', 'coach', 'quiz'] as const;
 const MAX_MESSAGE_LENGTH = 4000;
-const MAX_HISTORY_MESSAGES = 12;
+const MAX_HISTORY_MESSAGES = 20;
 const GLOBAL_SYSTEM_PROMPT = `You are Tech Academia AI.
 Always respond in the same language as the user.
 If the user writes Burmese, reply in Burmese.
