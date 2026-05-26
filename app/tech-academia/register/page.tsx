@@ -7,25 +7,10 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 import { auth, db } from "../../../lib/firebase";
+import { logFirestoreSavePayload, removeUndefinedDeep } from "../../../lib/tech-academia/firestore-clean";
 import { useTechAcademia } from "../../../components/tech-academia/use-tech-academia";
 import { PageHeader } from "../../../components/tech-academia/page-header";
 import { SectionShell } from "../../../components/tech-academia/section-shell";
-
-function removeUndefinedValues<T>(value: T): T {
-  if (Array.isArray(value)) {
-    return value.map((item) => removeUndefinedValues(item)) as T;
-  }
-
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value)
-        .filter(([, entryValue]) => entryValue !== undefined)
-        .map(([entryKey, entryValue]) => [entryKey, removeUndefinedValues(entryValue)])
-    ) as T;
-  }
-
-  return value;
-}
 
 export default function TechAcademiaRegisterPage() {
   const router = useRouter();
@@ -91,19 +76,17 @@ export default function TechAcademiaRegisterPage() {
         "users",
         credential.user.uid
       );
+      const registrationProfile = removeUndefinedDeep({
+        uid: credential.user.uid,
+        email,
+        displayName,
+        plan: "free",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
 
-      await setDoc(
-        userDocRef,
-        removeUndefinedValues({
-          uid: credential.user.uid,
-          email,
-          displayName,
-          plan: "free",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        }),
-        { merge: true }
-      );
+      logFirestoreSavePayload(registrationProfile);
+      await setDoc(userDocRef, registrationProfile, { merge: true });
 
       router.replace("/tech-academia/dashboard");
     } catch (error) {

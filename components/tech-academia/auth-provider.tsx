@@ -26,6 +26,7 @@ import {
 } from 'firebase/firestore';
 import type { ChatMessage, ChatSession, QuizScore, TechAcademiaProfile } from '../../types/tech-academia';
 import { auth, db } from '../../lib/firebase';
+import { logFirestoreSavePayload, removeUndefinedDeep } from '../../lib/tech-academia/firestore-clean';
 import { techAcademiaCourses } from '../../data/tech-academia-courses';
 
 const DEFAULT_PROFILE: TechAcademiaProfile = {
@@ -54,22 +55,6 @@ type TechAcademiaContextValue = {
 };
 
 const TechAcademiaContext = createContext<TechAcademiaContextValue | undefined>(undefined);
-
-function removeUndefinedValues<T>(value: T): T {
-  if (Array.isArray(value)) {
-    return value.map((item) => removeUndefinedValues(item)) as T;
-  }
-
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value)
-        .filter(([, entryValue]) => entryValue !== undefined)
-        .map(([entryKey, entryValue]) => [entryKey, removeUndefinedValues(entryValue)]),
-    ) as T;
-  }
-
-  return value;
-}
 
 function shapeProfile(
   data: Partial<TechAcademiaProfile> | undefined,
@@ -132,7 +117,9 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         };
-        void setDoc(userDocRef, removeUndefinedValues(initialProfile), { merge: true });
+        const cleanProfile = removeUndefinedDeep(initialProfile);
+        logFirestoreSavePayload(cleanProfile);
+        void setDoc(userDocRef, cleanProfile, { merge: true });
         setProfile(shapeProfile(initialProfile, profileFallback));
       }
     });
@@ -167,7 +154,9 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
     async (data: Partial<TechAcademiaProfile>) => {
       if (!user) return;
       const userDocRef = doc(db, 'users', user.uid);
-      await setDoc(userDocRef, removeUndefinedValues({ ...data, updatedAt: serverTimestamp() }), { merge: true });
+      const cleanProfile = removeUndefinedDeep({ ...data, updatedAt: serverTimestamp() });
+      logFirestoreSavePayload(cleanProfile);
+      await setDoc(userDocRef, cleanProfile, { merge: true });
     },
     [user],
   );
@@ -178,16 +167,14 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
       const totalLessons = techAcademiaCourses.find((course) => course.id === courseId)?.totalLessons ?? completedLessons;
       const clamped = Math.max(0, Math.min(completedLessons, totalLessons));
       const userDocRef = doc(db, 'users', user.uid);
-      await setDoc(
-        userDocRef,
-        removeUndefinedValues({
-          progress: {
-            [courseId]: clamped,
-          },
-          updatedAt: serverTimestamp(),
-        }),
-        { merge: true },
-      );
+      const cleanProgress = removeUndefinedDeep({
+        progress: {
+          [courseId]: clamped,
+        },
+        updatedAt: serverTimestamp(),
+      });
+      logFirestoreSavePayload(cleanProgress);
+      await setDoc(userDocRef, cleanProgress, { merge: true });
     },
     [user],
   );
@@ -238,11 +225,9 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
         ...(quizScore ? { quizScore } : {}),
         ...(id ? {} : { createdAt: serverTimestamp() }),
       };
-      await setDoc(
-        chatDocRef,
-        removeUndefinedValues(chatData),
-        { merge: true },
-      );
+      const cleanChatData = removeUndefinedDeep(chatData);
+      logFirestoreSavePayload(cleanChatData);
+      await setDoc(chatDocRef, cleanChatData, { merge: true });
       setActiveChatId(chatDocRef.id);
       return chatDocRef.id;
     },
