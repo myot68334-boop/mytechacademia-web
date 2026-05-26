@@ -1,31 +1,85 @@
 import Link from "next/link";
-import type { CSSProperties } from "react";
-import { ScreenshotShowcase } from "../../components/screenshot-showcase";
 import { getProjectGallery } from "../../data/screenshots";
 import { getLang, withLang } from "../../lib/i18n";
 
 const copy = {
   en: {
     eyebrow: "AI Learning Platform",
-    body: "Tech Academia is the long-term AI learning platform vision inside the ecosystem. It is shaped around technical study, engineering learning, productivity support, and future voice-first tutoring experiences for serious learners.",
+    heroBadge: "Version 2 Preview",
+    heroSubtitle: "Precision AI guidance for technical learners and studios.",
+    body: "Tech Academia Version 2 elevates the long-term AI learning platform vision. It brings architecture, engineering, productivity support, and voice-first tutoring into one responsible workflow for serious learners.",
     bullets: [
-      "Technical tutoring and AI assistance",
-      "Future-ready voice learning direction",
-      "Scalable platform vision for serious learners",
+      "Human-approved AI companion for architecture and engineering study.",
+      "Structured workflows that connect drafting, QA, and deployment.",
+      "Designed for bilingual coaching and focused small teams.",
     ],
-    roadmap: "See the Roadmap",
+    heroMetrics: [
+      ["6 AI roles", "Specialists covering drafting, QA, and release"],
+      ["3 languages", "English, Japanese, and Burmese support"],
+      ["24h review", "Human approval within a single day"],
+    ],
+    roadmap: "Plan a roadmap session",
     explore: "Explore Ecosystem",
     bestFor: "Best For",
     bestTitle: "One future platform for deep learning support",
     bestBody: "Built for students, technical learners, engineers, and users who want a structured AI-powered study environment that can grow with them over time.",
-    screens: "Screenshots",
-    screensTitle: "Dashboard and session concept visuals",
-    screensLead: "Tech Academia is still at the platform-vision stage, so these polished concept visuals map the dashboard and study-session direction until full product captures are available.",
+    aiShowcase: {
+      eyebrow: "AI Assistant Showcase",
+      title: "AI assistants designed for responsible delivery",
+      lead: "Version 2 introduces a collaborative AI layer that keeps every request accountable while speeding up high-value work.",
+      cards: [
+        {
+          title: "Guided multi-agent drafting",
+          body: "Every request passes through coordinator, content, and QA agents so outputs stay aligned with project context.",
+          highlights: [
+            "Coordinator routes context instantly",
+            "Language-ready drafts in EN / JA / MY",
+            "Human checkpoints recorded in the log",
+          ],
+        },
+        {
+          title: "Contextual knowledge vault",
+          body: "Reusable knowledge objects hold standards, templates, and past learnings so teams never restart from zero.",
+          highlights: [
+            "Discipline-specific standards saved",
+            "Quick recall during study sessions",
+            "Version control for every brief",
+          ],
+        },
+        {
+          title: "Ship-ready operations",
+          body: "Ops automation keeps releases consistent with deployment checklists, rollback notes, and notification prep.",
+          highlights: [
+            "Deployment checklist synced",
+            "Rollback notes captured fast",
+            "Release notifications ready to send",
+          ],
+        },
+      ],
+    },
+    voiceSection: {
+      eyebrow: "Voice AI",
+      badge: "Realtime concept",
+      title: "Voice-first tutoring is ready to activate",
+      lead: "Learners can move from structured prompts to natural conversations without leaving the workspace.",
+      points: [
+        "Realtime bilingual whisper + response for English, Japanese, and Burmese.",
+        "Session summaries captured and translated for review.",
+        "Hands-free controls for drawing, markups, and calculator prompts.",
+        "Safeguarded escalation to human mentors before publishing.",
+      ],
+      caption: "Voice experiences roll out alongside the guided study timeline.",
+    },
+    featuresSection: {
+      eyebrow: "Platform highlights",
+      title: "Build momentum with guided technical learning",
+      lead: "Each capability blends AI workflow assistance with structure so serious learners can progress faster without losing depth.",
+    },
     features: [
-      ["Technical learning core", "Architecture, engineering, BIM, quantity survey, math, and physics can sit inside one AI support layer."],
-      ["Mode-based experience", "Teacher mode, coach mode, quiz mode, and deep explanation mode fit naturally into the roadmap."],
-      ["Voice-ready future", "The product direction already expects real-time voice, multilingual response, and session-based help."],
-      ["Platform-level ambition", "Built as a future umbrella product that can support mobile, web, and bot channels together."],
+      ["Technical command center", "A single AI hub for architecture, engineering, BIM, and operations teams."],
+      ["Mode-based learning", "Switch between tutor, coach, quiz, and deep explanation modes during every session."],
+      ["Voice-ready future", "Realtime bilingual voice support and transcripts are built into the roadmap."],
+      ["Platform-level ambition", "Designed to scale across mobile, web, and conversational channels without losing oversight."],
     ],
     teamEyebrow: "AI Assistant Team",
     teamTitle: "A practical AI assistant team for My Tech Academia",
@@ -43,6 +97,7 @@ const copy = {
       ["Ops Agent", "Tracks deployment checklists, Vercel status, Git activity, and post-launch monitoring work."],
     ],
     flow: ["Idea / task", "Coordinator routes work", "Specialists draft + check", "Human review", "Approve", "Publish / deploy", "Monitor results"],
+    flowTitle: "AI team workflow",
     checklistTitle: "Human approval checklist",
     checklist: [
       "Brand voice and language quality are correct",
@@ -50,31 +105,161 @@ const copy = {
       "SEO metadata and social preview are ready",
       "Deploy notes and rollback path are clear",
     ],
-    ctaTitle: "Want to shape the future of Tech Academia?",
-    ctaBody: "Reach out if you want to discuss platform scope, MVP strategy, product narrative, or the long-term AI learning direction under the My Tech Academia brand.",
-    cta: "Discuss the Platform",
+    screens: "Workspace glimpses",
+    screensTitle: "Workspace and session concept snapshots",
+    screensLead: "Version 2 visuals highlight upcoming dashboard, session flow, and knowledge vault experiences until live captures arrive.",
+    categoriesSection: {
+      eyebrow: "Technical Learning",
+      title: "Built for real project disciplines",
+      lead: "Each category mixes foundational theory with AI-assisted practice tasks.",
+      categories: [
+        ["Architecture", "Studio-ready coordination with building physics, codes, and narrative briefs."],
+        ["Structural Engineering", "Applied calculations, load paths, and review-ready reporting templates."],
+        ["AutoCAD", "Clean drafting standards, layer management, and annotation walkthroughs."],
+        ["Revit", "Family management, parametric workflows, and BIM coordination tips."],
+        ["BIM", "Model checking, shared parameters, and data handoff routines."],
+        ["Quantity Survey", "Take-off logic, cost tracking sheets, and revision control."],
+        ["Math", "Core mathematics refreshers for technical entrance requirements."],
+        ["Physics", "Mechanics, materials, and real-world problem framing for study groups."],
+      ],
+    },
+    testimonials: {
+      eyebrow: "Testimonials",
+      title: "Learners see momentum within the first month",
+      lead: "Early access groups across Japan are already applying Tech Academia workflows to real assignments.",
+      items: [
+        {
+          quote: "The coordinator and content agents helped my architecture studio brief read like a real proposal in two languages.",
+          name: "Aiko K.",
+          role: "Architecture student, Tokyo",
+        },
+        {
+          quote: "Having the QA agent outline structural checks meant our study group finally understood why the answers mattered.",
+          name: "Tanaka R.",
+          role: "Structural engineering mentor, Osaka",
+        },
+        {
+          quote: "Voice rehearsal plus follow-up notes gave our Burmese learners confidence to explain Revit decisions in interviews.",
+          name: "Myo Thandar",
+          role: "BIM coordinator, Nagoya",
+        },
+      ],
+    },
+    faq: {
+      eyebrow: "FAQ",
+      title: "Frequently asked questions",
+      lead: "Quick answers before you book a session.",
+      items: [
+        {
+          question: "How does human approval work?",
+          answer: "Every AI draft is checked by a human reviewer inside 24 hours. Nothing ships to production or students without that sign-off.",
+        },
+        {
+          question: "Can we join with mixed language groups?",
+          answer: "Yes. Sessions routinely blend English, Japanese, and Burmese learners. The AI agents draft in all three languages and tutors keep context aligned.",
+        },
+        {
+          question: "Do we need existing project files?",
+          answer: "Bring whatever you have—drawings, spreadsheets, or notes. The coordinator agent helps organise everything into the shared workspace.",
+        },
+        {
+          question: "When will voice tutoring be available?",
+          answer: "Voice AI is in controlled rollout. Small groups joining now get early rehearsal support with transcripts and human oversight.",
+        },
+      ],
+    },
+    ctaTitle: "Partner with us on Tech Academia Version 2",
+    ctaBody: "Book a conversation to plan disciplined AI workflows, early voice tutoring pilots, or technical curriculum build-outs.",
+    cta: "Book a roadmap call",
+    footer: {
+      tagline: "Tech Academia is part of the My Tech Academia ecosystem.",
+      links: [
+        { label: "Projects", href: "/projects" },
+        { label: "ZayCho", href: "/zaycho" },
+        { label: "WorkJapaneseGO", href: "/work-japanese-go" },
+        { label: "Contact", href: "/contact" },
+      ],
+      contactLabel: "Book a session",
+      rights: "© {year} My Tech Academia. All rights reserved.",
+    },
   },
   ja: {
     eyebrow: "AI学習プラットフォーム",
-    body: "Tech Academia は、このエコシステムの中で長期的に育てていく AI 学習プラットフォーム構想です。技術学習、エンジニアリング支援、生産性向上、将来の音声中心チュータリング体験をひとつの流れで支えられるよう設計されています。",
+    heroBadge: "バージョン2プレビュー",
+    heroSubtitle: "技術系学習者とスタジオのための精密な AI ナビゲーション。",
+    body: "Tech Academia バージョン2は、建築・エンジニアリング・生産性支援・音声チュータリングをひとつの責任あるワークフローにまとめた長期構想です。",
     bullets: [
-      "技術チュータリングと AI 支援",
-      "音声学習へ広がる将来設計",
-      "本格的な学習者に向けた拡張性の高い基盤",
+      "建築・エンジニアリング学習を支える、人による承認付き AI コンパニオン。",
+      "ドラフティング、QA、デプロイを結びつける構造化ワークフロー。",
+      "バイリンガル指導と少人数チームに最適な設計。",
     ],
-    roadmap: "ロードマップを見る",
+    heroMetrics: [
+      ["6つのAIロール", "ドラフティング・QA・リリースを担当する専門体制"],
+      ["3言語対応", "英語・日本語・ビルマ語のサポート"],
+      ["24時間レビュー", "人による承認が1日以内に完了"],
+    ],
+    roadmap: "ロードマップを予約",
     explore: "エコシステムを見る",
     bestFor: "おすすめ対象",
     bestTitle: "深い学びを支える、将来の統合型プラットフォーム",
     bestBody: "学生、技術学習者、エンジニア、そして長く使える AI 学習環境を求める人のために設計されています。",
-    screens: "スクリーンショット",
-    screensTitle: "ダッシュボードと学習セッションの構想ビジュアル",
-    screensLead: "Tech Academia はまだ構想段階のため、ここでは将来のダッシュボードや学習セッションの方向性を伝えるコンセプトビジュアルを掲載しています。",
+    aiShowcase: {
+      eyebrow: "AIアシスタントショーケース",
+      title: "責任ある成果のために設計された AI アシスタント",
+      lead: "バージョン2では、すべての依頼を追跡しながら価値ある作業を加速させる協調型 AI レイヤーが導入されます。",
+      cards: [
+        {
+          title: "ガイド付きマルチエージェントドラフト",
+          body: "すべての依頼がコーディネーター、コンテンツ、QA エージェントを通過し、プロジェクトの前提に沿った成果を守ります。",
+          highlights: [
+            "コーディネーターが即座にコンテキストを振り分け",
+            "英語・日本語・ビルマ語で草案を作成",
+            "人のチェックポイントをログに記録",
+          ],
+        },
+        {
+          title: "コンテキスト知識ボルト",
+          body: "再利用可能な知識オブジェクトが基準書やテンプレート、過去の学びを保持し、チームがゼロからやり直さないようにします。",
+          highlights: [
+            "専門分野ごとの基準を保存",
+            "セッション中に素早く呼び出し",
+            "すべてのブリーフにバージョン管理",
+          ],
+        },
+        {
+          title: "出荷準備済みオペレーション",
+          body: "Ops オートメーションがデプロイチェックリスト、ロールバックメモ、通知準備を整え、リリースを一貫させます。",
+          highlights: [
+            "デプロイチェックリストを同期",
+            "ロールバックメモを素早く記録",
+            "リリース通知をすぐ送信可能",
+          ],
+        },
+      ],
+    },
+    voiceSection: {
+      eyebrow: "Voice AI",
+      badge: "リアルタイム構想",
+      title: "音声ファーストのチュータリングはすぐに開始可能",
+      lead: "構造化プロンプトから自然な会話まで、学習者はワークスペース内ですべて完結できます。",
+      points: [
+        "英語・日本語・ビルマ語に対応したリアルタイムの音声入力と応答。",
+        "セッション要約を自動保存し、翻訳して復習に使えます。",
+        "図面、マークアップ、計算機プロンプトをハンズフリーで操作。",
+        "公開前に必ず人間メンターへエスカレーションして安全を確保。",
+      ],
+      caption: "音声体験はガイド付き学習タイムラインと並行して展開されます。",
+    },
+    featuresSection: {
+      eyebrow: "プラットフォームのハイライト",
+      title: "AIガイド付きの技術学習で前進を加速",
+      lead: "各機能が AI ワークフロー支援と構造化された学びを組み合わせ、本気で学ぶ人が深さを失わずに前進できるようにします。",
+    },
     features: [
-      ["技術学習の核", "建築、工学、BIM、積算、数学、物理を、ひとつの AI 支援レイヤーで支える構想です。"],
-      ["モード別の学習体験", "講師モード、伴走モード、クイズモード、詳解モードなどを自然に組み込める設計です。"],
-      ["音声対応の未来", "リアルタイム音声、多言語応答、セッション型支援へ広げていける方向性を見据えています。"],
-      ["プラットフォームとしての拡張性", "モバイル、Web、ボットを横断しながら成長できる将来の中核プロダクトを目指しています。"],
+      ["技術コマンドセンター", "建築・エンジニアリング・BIM・オペレーションチームをひとつのAIハブに集約します。"],
+      ["モード切り替え学習", "チューター／コーチ／クイズ／詳解モードをセッションごとに切り替えられます。"],
+      ["音声対応の未来", "リアルタイムのバイリンガル音声サポートとトランスクリプトをロードマップに組み込んでいます。"],
+      ["プラットフォームとしての拡張性", "モバイル・Web・会話チャネルに広がっても管理体制を失いません。"],
     ],
     teamEyebrow: "AIアシスタントチーム",
     teamTitle: "My Tech Academia を支える実務型 AI アシスタントチーム",
@@ -92,6 +277,7 @@ const copy = {
       ["Ops Agent", "デプロイの確認項目、Vercel の状態、Git の更新履歴、公開後の確認作業を整理します。"],
     ],
     flow: ["アイデア / 依頼", "Coordinator が振り分け", "専門担当が作成・確認", "人による確認", "承認", "公開 / デプロイ", "結果を確認"],
+    flowTitle: "AIチームのワークフロー",
     checklistTitle: "人が承認するチェック項目",
     checklist: [
       "ブランドの言葉づかいと言語品質が合っている",
@@ -99,31 +285,161 @@ const copy = {
       "SEOメタデータとSNSプレビューが準備済み",
       "デプロイメモと戻し方が明確",
     ],
-    ctaTitle: "Tech Academia の将来像を一緒に形にしませんか？",
-    ctaBody: "プラットフォームの範囲、MVP戦略、プロダクトストーリー、長期的な AI 学習の方向性について話したい方はぜひご連絡ください。",
-    cta: "プラットフォームについて相談する",
+    screens: "コンセプトビジュアル",
+    screensTitle: "ワークスペースとセッションのコンセプトビジュアル",
+    screensLead: "バージョン2のビジュアルでは、ダッシュボード、セッションフロー、ナレッジボルトの方向性を先行して確認できます。",
+    categoriesSection: {
+      eyebrow: "技術学習",
+      title: "実務ディシプリンに合わせて設計",
+      lead: "基礎理論と AI 支援の演習タスクを組み合わせています。",
+      categories: [
+        ["建築", "建築物理・法規・コンセプトブリーフまでスタジオで使える調整力を養います。"],
+        ["構造エンジニアリング", "応用計算、荷重経路、レビュー向けレポートテンプレートを整理します。"],
+        ["AutoCAD", "整ったドラフティング基準、レイヤー管理、注釈ワークフローを理解します。"],
+        ["Revit", "ファミリ管理、パラメトリックワークフロー、BIM連携のコツを学びます。"],
+        ["BIM", "モデルチェック、共有パラメータ、データ引き継ぎの手順を確立します。"],
+        ["数量積算", "拾い出しロジック、コスト管理シート、改訂コントロールを整備します。"],
+        ["数学", "技術系入試に必要な基礎数学をリフレッシュします。"],
+        ["物理", "力学・材料・実務課題の捉え方を学習グループで共有します。"],
+      ],
+    },
+    testimonials: {
+      eyebrow: "受講者の声",
+      title: "1か月で手応えを感じる学習者が増えています",
+      lead: "日本各地の少人数チームが Tech Academia のワークフローを実課題に活用しています。",
+      items: [
+        {
+          quote: "コーディネーターとコンテンツエージェントのおかげで、建築スタジオのブリーフが二言語でも提案書らしく整いました。",
+          name: "Aiko K.",
+          role: "建築系学生（東京）",
+        },
+        {
+          quote: "QA エージェントが構造チェックを整理してくれたので、学習グループ全員が解答の意味を理解できました。",
+          name: "Tanaka R.",
+          role: "構造エンジニアリング指導者（大阪）",
+        },
+        {
+          quote: "音声リハーサルとフォローアップノートで、ビルマ人学習者も面接で Revit の判断を自信を持って説明できました。",
+          name: "ミョー・タンダー",
+          role: "BIM コーディネーター（名古屋）",
+        },
+      ],
+    },
+    faq: {
+      eyebrow: "FAQ",
+      title: "よくある質問",
+      lead: "セッションを予約する前にご確認ください。",
+      items: [
+        {
+          question: "人による承認はどのように行われますか？",
+          answer: "すべての AI 草案は24時間以内に人がレビューします。承認なしで本番や学習者に届くことはありません。",
+        },
+        {
+          question: "複数言語のグループでも参加できますか？",
+          answer: "はい。英語・日本語・ビルマ語が混在するセッションが日常的に行われています。AI エージェントは3言語で草案を作成し、指導者がコンテキストを整えます。",
+        },
+        {
+          question: "既存のプロジェクトファイルが必要ですか？",
+          answer: "図面・スプレッドシート・メモなど、手元にあるものを持参してください。コーディネーターエージェントが共有ワークスペースに整理します。",
+        },
+        {
+          question: "音声チュータリングはいつ利用できますか？",
+          answer: "Voice AI は段階的に公開中です。現在参加する少人数グループは、トランスクリプト付きのリハーサル支援を先行利用できます。",
+        },
+      ],
+    },
+    ctaTitle: "Tech Academia バージョン2について一緒に計画しませんか？",
+    ctaBody: "AIワークフロー、音声チュータリングのパイロット、技術カリキュラムづくりについて気軽にご相談ください。",
+    cta: "ロードマップ相談を予約する",
+    footer: {
+      tagline: "Tech Academia は My Tech Academia エコシステムの一部です。",
+      links: [
+        { label: "プロジェクト一覧", href: "/projects" },
+        { label: "ZayCho", href: "/zaycho" },
+        { label: "WorkJapaneseGO", href: "/work-japanese-go" },
+        { label: "お問い合わせ", href: "/contact" },
+      ],
+      contactLabel: "セッションを予約する",
+      rights: "© {year} My Tech Academia. All rights reserved.",
+    },
   },
   my: {
     eyebrow: "AI သင်ယူမှုပလက်ဖောင်း",
-    body: "Tech Academia သည် ထုတ်ကုန်စနစ်အတွင်း ရေရှည်တည်ဆောက်ဖော်ဆောင်သွားမည့် AI သင်ယူမှုပလက်ဖောင်း အမြင်ဖြစ်ပါသည်။ နည်းပညာဆိုင်ရာသင်ယူမှု၊ အင်ဂျင်နီယာဆိုင်ရာလေ့လာမှု၊ productivity အထောက်အပံ့နှင့် နောင်တွင် voice-first tutoring experience အထိ ချဲ့ထွင်နိုင်သော ပလက်ဖောင်းဦးတည်ချက်ကို အခြေခံထားပါသည်။",
+    heroBadge: "ဗားရှင်း 2 Preview",
+    heroSubtitle: "နည်းပညာသင်ယူသူများနှင့် စတူဒီယိုများအတွက် တိကျသည့် AI လမ်းညွှန်မှု။",
+    body: "Tech Academia Version 2 သည် architecture၊ engineering၊ productivity အထောက်အပံ့ နှင့် voice-first tutoring ကို တစ်ခုတည်းသော တာဝန်ရှိသည့် workflow အဖြစ် ပေါင်းစည်းထားပြီး ရေရှည်အမြင်ကို မြှင့်တင်ပေးပါသည်။",
     bullets: [
-      "Technical tutoring နှင့် AI-assisted learning support",
-      "Voice-based learning experience သို့ ချဲ့ထွင်နိုင်သော ရေရှည်ဦးတည်ချက်",
-      "အလေးထားသင်ယူသူများအတွက် ချဲ့ထွင်နိုင်သော ပလက်ဖောင်းအမြင်",
+      "Architecture နှင့် engineering သင်ယူမှုအတွက် လူအတည်ပြုထားသော AI အကူအညီ။",
+      "Drafting၊ QA နှင့် deployment ကို ချိတ်ဆက်ပေးသော ဖွဲ့စည်းတကျ workflow။",
+      "ဘာသာစုံနှင့် အဖွဲ့ငယ်များအတွက် အထူးဒီဇိုင်းပြုလုပ်ထားခြင်း။",
     ],
-    roadmap: "လမ်းပြမြေပုံအကြောင်း ဆွေးနွေးရန်",
+    heroMetrics: [
+      ["AI အခန်းကဏ္ဍ ၆ ခု", "Drafting၊ QA နှင့် release ကိုထောက်ပံ့သည့် specialist များ"],
+      ["ဘာသာ ၃ မျိုး", "English၊ Japanese၊ Burmese ပံ့ပိုးမှု"],
+      ["၂၄ နာရီ အတွင်း အတည်ပြုချက်", "၁ ရက်အတွင်း လူမှ စစ်ဆေးပြီး အတည်ပြုသည်"],
+    ],
+    roadmap: "Roadmap ဆွေးနွေးရန်",
     explore: "ထုတ်ကုန်စနစ်ကြည့်ရန်",
     bestFor: "အသုံးပြုရန် သင့်တော်သူများ",
     bestTitle: "အနက်ရှိုင်းသင်ယူမှုကို ရေရှည်ပံ့ပိုးပေးနိုင်မည့် ပလက်ဖောင်း",
-    bestBody: "ကျောင်းသားများ၊ နည်းပညာလေ့လာသူများ၊ အင်ဂျင်နီယာများနှင့် စနစ်တကျတည်ဆောက်ထားသော AI-assisted study environment ကို ရေရှည်အသုံးပြုလိုသူများအတွက် ရည်ရွယ်ထားပါသည်။",
-    screens: "မြင်ကွင်းများ",
-    screensTitle: "Dashboard နှင့် learning session concept visuals",
-    screensLead: "Tech Academia သည် လက်ရှိတွင် platform vision stage တွင် ရှိနေသေးသောကြောင့်၊ full product captures မရှိသေးချိန်အတွက် dashboard direction နှင့် study-session structure ကို ပြသသော concept visuals များကို အသုံးပြုထားပါသည်။",
+    bestBody: "ကျောင်းသားများ၊ နည်းပညာလေ့လာသူများ၊ အင်ဂျင်နီယာများနှင့် AI အကူအညီဖြင့် ဖွဲ့စည်းတကျ သင်ယူလိုသူများအတွက် စီမံထားခြင်းဖြစ်ပါသည်။",
+    aiShowcase: {
+      eyebrow: "AI Assistant Showcase",
+      title: "တာဝန်ယူစိတ်ရှိစေရန် ဒီဇိုင်းထုတ်ထားသော AI အကူအညီများ",
+      lead: "Version 2 တွင် တန်ဖိုးမြင့် အလုပ်များကို မြန်တိုးစေသော်လည်း တောင်းဆိုချက်တိုင်းကို ထိန်းသိမ်းနိုင်သော ပူးပေါင်းသည့် AI လွှာကို ထည့်သွင်းထားသည်။",
+      cards: [
+        {
+          title: "Guided multi-agent drafting",
+          body: "တောင်းဆိုချက်တိုင်းကို coordinator၊ content နှင့် QA agents များမှတဆင့် ဖြတ်သန်းစေပြီး ပရောဂျက် context နှင့် ကိုက်ညီစေပါသည်။",
+          highlights: [
+            "Coordinator သည် context ကို ချက်ချင်း ခွဲဝေသည်",
+            "EN / JA / MY draft များကို ချက်ချင်းပြင်ဆင်ပေးနိုင်သည်",
+            "လူအတည်ပြုချက်များကို log ထဲတွင် သိမ်းဆည်းထားသည်",
+          ],
+        },
+        {
+          title: "Contextual knowledge vault",
+          body: "ပြန်လည်အသုံးပြုနိုင်သော knowledge objects များက standards၊ templates နှင့် အတွေ့အကြုံများကို သိမ်းဆည်းပေးပြီး အဖွဲ့များသည် ထပ်မံ စတင်စရာ မလိုတော့ပါ။",
+          highlights: [
+            "Discipline-by-discipline standards များကို သိမ်းဆည်းထားသည်",
+            "သင်ယူမှု session များတွင် မြန်ဆန်ပြန်ခေါ်ယူနိုင်သည်",
+            "Brief အသစ်တိုင်းကို version control ဖြင့် ထိန်းချုပ်ထားသည်",
+          ],
+        },
+        {
+          title: "Ship-ready operations",
+          body: "Ops automation က deployment checklist၊ rollback မှတ်စု နှင့် အသိပေးချက်များဖြင့် release တိုင်းကို တစ်မျိုးတည်းစနစ်ထိန်းပေးသည်။",
+          highlights: [
+            "Deployment checklist ကို ချိတ်ဆက်ထားသည်",
+            "Rollback မှတ်စုများကို အချိန်မီ မှတ်တမ်းတင်ပေးသည်",
+            "Release အသိပေးချက်များကို အသင့်ထားပေးသည်",
+          ],
+        },
+      ],
+    },
+    voiceSection: {
+      eyebrow: "Voice AI",
+      badge: "တိုက်ရိုက် အယူအဆ",
+      title: "Voice-first tutoring ကို ချက်ချင်းစတင်ရန် အဆင်သင့်ဖြစ်နေပြီ",
+      lead: "ဖွဲ့စည်းတကျသော prompt များမှ သဘာဝစကားပြောသို့ workspace ထဲတွင် ရွေ့ပြောင်းနိုင်သည်။",
+      points: [
+        "English၊ Japanese၊ Burmese အတွက် realtime bilingual whisper နှင့် response ပံ့ပိုးမှု။",
+        "Session မှတ်တမ်းများကို အလိုအလျောက် သိမ်းဆည်းပြီး အကြိမ်ကြိမ် ပြန်ဖွင့်လို့ရသည်။",
+        "ပန်းချီဆွဲခြင်း၊ မှတ်သားခြင်း၊ ကိန်းတွက်မှု prompts များကို လက်မထောင်ဘဲ ထိန်းချုပ်နိုင်သည်။",
+        "Publish မလုပ်မီ လူမန်တော်များထံသို့ အလိုအလျောက် escalate လုပ်ပေးသည်။",
+      ],
+      caption: "Voice အတွေ့အကြုံများကို ညွှန်ကြားသင်ယူမှု timeline နှင့်အတူတကွ ဖြန့်ချိသွားမည်ဖြစ်သည်။",
+    },
+    featuresSection: {
+      eyebrow: "ပလက်ဖောင်းအင်္ဂါရပ်ထင်ရှားချက်များ",
+      title: "AI လမ်းညွှန်ပါဝင်သည့် နည်းပညာသင်ယူမှုကြောင့် မြန်ဆန်စွာ တိုးတက်နိုင်စေပါ",
+      lead: "အင်္ဂါရပ်တိုင်းသည် AI workflow အကူအညီနှင့် ဖွဲ့စည်းတကျ သင်ယူမှုကို ပေါင်းစည်းထားပြီး နက်ရှိုင်းစွာ သင်ယူလိုသူများအတွက် အချိန်မရှုံးဘဲ မြန်ဆန်စွာ တိုးတက်နိုင်စေပါသည်။",
+    },
     features: [
-      ["Technical learning core", "Architecture၊ engineering၊ BIM၊ quantity survey၊ math နှင့် physics တို့ကို AI support layer တစ်ခုအောက်တွင် ပံ့ပိုးပေးနိုင်ရန် ရည်ရွယ်ထားပါသည်။"],
-      ["Mode-based experience", "Teacher mode၊ coach mode၊ quiz mode နှင့် deep explanation mode တို့ကို coherent learning flow အတွင်း ထည့်သွင်းအသုံးပြုနိုင်ရန် စီစဉ်ထားပါသည်။"],
-      ["Voice-ready future", "Real-time voice၊ multilingual response နှင့် session-based help experience များကို ရေရှည်ဦးတည်ချက်အဖြစ် စဉ်းစားထားပါသည်။"],
-      ["Platform-scale ambition", "mobile၊ web နှင့် bot channels များကို umbrella product structure တစ်ခုအောက်တွင် ချိတ်ဆက်နိုင်ရန် တည်ဆောက်ထားပါသည်။"],
+      ["နည်းပညာ Command Center", "Architecture၊ engineering၊ BIM နှင့် operations အဖွဲ့များအတွက် AI hub တစ်ခုတည်း။"],
+      ["Mode-based သင်ယူမှု", "Tutor၊ coach၊ quiz နှင့် deep explanation မုဒ်များကို session တိုင်းတွင် ပြောင်းလဲအသုံးချနိုင်သည်။"],
+      ["Voice-ready အနာဂတ်", "Realtime bilingual voice ပံ့ပိုးမှုနှင့် transcript များကို roadmap ထဲတွင် ထည့်သွင်းထားသည်။"],
+      ["Platform-level Ambition", "Mobile၊ web နှင့် စကားပြောချန်နယ်များတွင် ချိတ်ဆက်အသုံးပြုစေချိန်တွிலும் ကြီးကြပ်မှုမလွှတ်ဘဲ ထိန်းသိမ်းထားနိုင်သည်။"],
     ],
     teamEyebrow: "AI Assistant Team",
     teamTitle: "My Tech Academia အတွက် လက်တွေ့အသုံးဝင်သော AI assistant team",
@@ -141,6 +457,7 @@ const copy = {
       ["Ops Agent", "deploy checklist၊ Vercel status၊ Git update note နှင့် post-launch monitoring task များကို စီမံပါသည်။"],
     ],
     flow: ["Idea / Task", "Coordinator က route လုပ်", "Specialists draft + check", "Human review", "Approve", "Publish / Deploy", "Monitor results"],
+    flowTitle: "AI အဖွဲ့၏ workflow",
     checklistTitle: "Human approval checklist",
     checklist: [
       "Brand voice နှင့် language quality မှန်ကန်ရမည်",
@@ -148,9 +465,83 @@ const copy = {
       "SEO metadata နှင့် social preview အဆင်သင့်ဖြစ်ရမည်",
       "Deploy notes နှင့် rollback path ရှင်းလင်းရမည်",
     ],
-    ctaTitle: "Tech Academia ၏ အနာဂတ် platform direction ကို အတူတကွ ပုံဖော်လိုပါသလား",
-    ctaBody: "platform scope၊ MVP strategy၊ product narrative နှင့် ရေရှည် AI learning direction များအကြောင်း My Tech Academia brand အောက်တွင် ဆွေးနွေးနိုင်ပါသည်။",
-    cta: "ပလက်ဖောင်းအကြောင်း ဆွေးနွေးရန်",
+    screens: "Concept Visuals",
+    screensTitle: "Workspace နှင့် session concept snapshots",
+    screensLead: "Version 2 ၏ dashboard၊ session flow နှင့် knowledge vault အတွေ့အကြုံများကို လက်တွေ့ capture မရသေးသဖြင့် ဤ concept visual များဖြင့် ဖော်ပြထားပါသည်။",
+    categoriesSection: {
+      eyebrow: "နည်းပညာသင်ယူမှု",
+      title: "တကယ့်ပရောဂျက် discipline များအတွက် ဖန်တီးထားသည်",
+      lead: "အခြေခံသီအိုရီများနှင့် AI ပူးပေါင်းပေးသည့် လက်တွေ့ဆောင်ရွက်မှုများကို ပေါင်းစည်းထားသည်။",
+      categories: [
+        ["Architecture", "Building physics၊ code နှင့် narrative brief များကို စတူဒီယိုတွင် အသုံးချနိုင်အောင် ပြင်ဆင်ပေးသည်။"],
+        ["Structural Engineering", "Applied calculation၊ load path နှင့် review-ready report template များကို စနစ်တကျ တည်ဆောက်ပေးသည်။"],
+        ["AutoCAD", "Drafting standard၊ layer management နှင့် annotation လမ်းညွှန်များကို ဖော်ပြပေးသည်။"],
+        ["Revit", "Family management၊ parametric workflow နှင့် BIM coordination အကြံပြုချက်များကို မျှဝေသည်။"],
+        ["BIM", "Model checking၊ shared parameter နှင့် data handoff လုပ်ငန်းစဉ်များကို တည်ဆောက်ပေးသည်။"],
+        ["Quantity Survey", "Take-off logic၊ cost tracking sheets နှင့် ပြင်ဆင်မှုများကို ထိန်းချုပ်ပေးသည်။"],
+        ["Math", "နည်းပညာဝင်ခွင့်အတွက်လိုအပ်သော သင်္ချာအခြေခံများကို ပြန်လည်သရုပ်ပြပေးသည်။"],
+        ["Physics", "Mechanics၊ material နှင့် ပြဿနာတည်ဆောက်နည်းများကို သင်တန်းအဖွဲ့နှင့် မျှဝေပါသည်။"],
+      ],
+    },
+    testimonials: {
+      eyebrow: "ထောက်ခံသံများ",
+      title: "တစ်လအတွင်း သင်ယူမှုအဆင်ပြေမှုကို တွေ့မြင်စေပါသည်",
+      lead: "ဂျပန်တစ်ကုန်ရှိ အဖွဲ့ငယ်များက Tech Academia workflow ကို အမှန်တကယ်လုပ်ငန်းတာဝန်များတွင် အသုံးချနေပြီဖြစ်သည်။",
+      items: [
+        {
+          quote: "Coordinator နှင့် content agents ကြောင့် ကျွန်တော့် architecture studio brief ကို ဘာသာနှစ်မျိုးစလုံးဖြင့် အမှန်တကယ်သော ပေးပို့စာတင်လက်ခံဖို့ အသင့်ဖြစ်စေခဲ့သည်။",
+          name: "Aiko K.",
+          role: "Architecture ကျောင်းသား (တိုကျို)",
+        },
+        {
+          quote: "QA agent က အစီအစဉ်တကျဆင်းသက်ထားပေးသည့် အဆင့်များကြောင့် ကျွန်တော်တို့ သင်တန်းအဖွဲ့က အဖြေထွက်ရတာရဲ့ အကြောင်းခံတရားကို နားလည်လာခဲ့တယ်။",
+          name: "Tanaka R.",
+          role: "Structural engineering မန်တော် (အိုစကာ)",
+        },
+        {
+          quote: "Voice rehearsal နဲ့ follow-up မှတ်စုကြောင့် မြန်မာလေ့လာသူများက Revit ဆုံးဖြတ်ချက်များကို အင်တာဗျူးတွင် ယုံကြည်စိတ်ချဖြင့် ရှင်းပြနိုင်လာတယ်။",
+          name: "Myo Thandar",
+          role: "BIM ကော်ဒီနေတာ (နဂိုယား)",
+        },
+      ],
+    },
+    faq: {
+      eyebrow: "FAQ",
+      title: "အမြဲမေးလေ့ရှိသော မေးခွန်းများ",
+      lead: "Session မှတ်ချက်တင်မီ အချက်အလက်များကို ကြိုတင်လေ့လာပါ။",
+      items: [
+        {
+          question: "လူအတည်ပြုခြင်းကို ဘယ်လိုလုပ်သလဲ?",
+          answer: "AI draft တိုင်းကို 24 နာရီအတွင်း လူက စစ်ဆေးအတည်ပြုပါသည်။ အတည်မရသေးပါက production သို့မဟုတ် သင်ကြားရေးကျောင်းသားများထံ မပို့ပါ။",
+        },
+        {
+          question: "ဘာသာစုံအဖွဲ့တွေပါဝင်လို့ရမလား?",
+          answer: "ရပါတယ်။ Session များတွင် English၊ Japanese၊ Burmese တက်ရောက်သူများကို ပုံမှန်ပဲ တွေ့ရပါတယ်။ AI agents သည် ဘာသာ ၃ မျိုးစလုံးဖြင့် draft ပြုလုပ်ပြီး မန်တော်များက context ကို တစ်ထပ်ထပ် ကြည့်ရှုပေးပါတယ်။",
+        },
+        {
+          question: "လုပ်ငန်းဖိုင်များမရှိဘဲ ပူးပေါင်းလို့ ရမလား?",
+          answer: "ရှိပြီးသား drawing၊ spreadsheet သို့မဟုတ် မှတ်စုများ ရှိလျှင် ယူလာပေးပါ။ Coordinator agent သည် အားလုံးကို သာယာစွာ စနစ်တကျ စုစည်းပေးပါမည်။",
+        },
+        {
+          question: "Voice tutoring ကို ဘယ်တော့ အသုံးပြုလို့ရမလဲ?",
+          answer: "Voice AI ကို အဆင့်လိုက် ဖြန့်ချိနေပြီး လက်ရှိ ပူးပေါင်းသူ အဖွဲ့ငယ်များသည် transcript နဲ့ လူကြီးမင်းအတည်ပြုချက်ပါဝင်သည့် rehearsal ကို ဦးစွာအသုံးပြုနိုင်ပါသည်။",
+        },
+      ],
+    },
+    ctaTitle: "Tech Academia Version 2 အတွက် အတူတကွ စီမံခန့်ခွဲလိုပါသလား?",
+    ctaBody: "AI workflow များ၊ voice tutoring pilot များနှင့် နည်းပညာသင်ယူမှု စီမံကိန်းများအတွက် ဆွေးနွေးရန် အခုပဲ အချိန်ချိန်းယူပါ။",
+    cta: "Roadmap ချိန်းညှိရန်",
+    footer: {
+      tagline: "Tech Academia သည် My Tech Academia ecosystem ၏ အစိတ်အပိုင်းတစ်ခုဖြစ်ပါသည်။",
+      links: [
+        { label: "Projects", href: "/projects" },
+        { label: "ZayCho", href: "/zaycho" },
+        { label: "WorkJapaneseGO", href: "/work-japanese-go" },
+        { label: "ဆက်သွယ်ရန်", href: "/contact" },
+      ],
+      contactLabel: "Session တင်ရန်",
+      rights: "© {year} My Tech Academia. မူပိုင်ခွင့်အားလုံးကို ကာကွယ်ထားသည်။",
+    },
   },
 } as const;
 
@@ -163,122 +554,422 @@ export default async function TechAcademiaPage({
   const lang = getLang(params?.lang);
   const t = copy[lang];
   const gallery = getProjectGallery(lang);
+  const technicalSection = {
+    eyebrow: t.screens,
+    title: t.screensTitle,
+    lead: t.screensLead,
+  };
+  const featuresSection = t.featuresSection;
+  const aiShowcase = t.aiShowcase;
+  const voiceSection = t.voiceSection;
+  const categoriesSection = t.categoriesSection;
+  const testimonials = t.testimonials;
+  const faq = t.faq;
+  const metrics = t.heroMetrics;
+  const year = new Date().getFullYear().toString();
+  const footerLinks = t.footer.links.map((item) => ({
+    ...item,
+    href: withLang(item.href, lang),
+  }));
+  const rights = t.footer.rights.replace("{year}", year);
+
   return (
-    <main>
-      <section className="project-hero">
-        <div className="container page-grid">
-          <section className={`copy-block page-hero-copy page-hero-copy--primary ${lang === "my" ? "page-hero-copy--my" : ""}`}>
-            <div className="eyebrow">{t.eyebrow}</div>
-            <h1>Tech Academia</h1>
-            <p>{t.body}</p>
-            <ul className="clean-list">
-              {t.bullets.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <div className="hero-actions">
-              <Link href={withLang("/contact", lang)} className="cta-chip cta-chip--solid">
-                {t.roadmap}
-              </Link>
-              <Link href={withLang("/projects", lang)} className="cta-chip cta-chip--ghost">
-                {t.explore}
-              </Link>
-            </div>
-          </section>
-          <aside className={`copy-block page-hero-copy page-hero-copy--secondary ${lang === "my" ? "page-hero-copy--my" : ""}`}>
-            <span className="project-tag">{t.bestFor}</span>
-            <h3>{t.bestTitle}</h3>
-            <p>{t.bestBody}</p>
-          </aside>
-        </div>
-      </section>
+    <main className="relative isolate bg-midnight-950 text-slate-100">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-midnight-950 via-midnight-900 to-midnight-950" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-grid-overlay opacity-35" />
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <div className="eyebrow">{t.screens}</div>
-              <h2 className="section-title">{t.screensTitle}</h2>
-            </div>
-            <p className="section-lead">{t.screensLead}</p>
-          </div>
-          <ScreenshotShowcase items={gallery.techAcademia} compact />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container ai-team">
-          <div className="section-head">
-            <div>
-              <div className="eyebrow">{t.teamEyebrow}</div>
-              <h2 className="section-title">{t.teamTitle}</h2>
-            </div>
-            <p className="section-lead">{t.teamLead}</p>
-          </div>
-
-          <div className="ai-team-board">
-            <div className="ai-team-coordinator">
-              <span className="ai-team-node-label">01</span>
-              <h3>{t.coordinator.label}</h3>
-              <p>{t.coordinator.body}</p>
-            </div>
-
-            <div className="ai-agent-grid">
-              {t.roles.map(([title, body], index) => (
-                <article key={title} className="ai-agent-card" style={{ "--agent-index": index } as CSSProperties}>
-                  <span className="ai-agent-card__index">{String(index + 2).padStart(2, "0")}</span>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div className="ai-team-flow" aria-label={t.teamTitle}>
-            {t.flow.map((step, index) => (
-              <div key={step} className="ai-flow-step">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{step}</strong>
+      <section className="relative overflow-hidden">
+        <div aria-hidden="true" className="absolute inset-x-0 -top-48 h-96 bg-aurora-500/25 blur-3xl" />
+        <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-1/2 bg-gradient-to-b from-white/5 via-transparent to-aurora-500/10 opacity-40 blur-3xl lg:block" />
+        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-24 sm:pt-28 lg:pb-28">
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="motion-safe:opacity-0 motion-safe:animate-fade-up">
+              <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em] text-aurora-200">
+                <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[10px] font-semibold tracking-[0.32em] text-aurora-100">{t.heroBadge}</span>
+                <span>{t.eyebrow}</span>
               </div>
+              <h1 className="mt-6 font-display text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">Tech Academia</h1>
+              <p className="mt-4 text-xl font-semibold text-aurora-100/90 sm:text-2xl">{t.heroSubtitle}</p>
+              <p className="mt-4 text-lg leading-relaxed text-slate-200 sm:text-xl">{t.body}</p>
+              <ul className="mt-8 space-y-3 text-base text-slate-200 sm:text-lg">
+                {t.bullets.map((item, index) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="mt-1 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-aurora-500/15 text-xs font-semibold text-aurora-100 ring-1 ring-aurora-500/40">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Link
+                  href={withLang("/contact", lang)}
+                  className="inline-flex items-center justify-center rounded-full bg-aurora-500 px-6 py-3 text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
+                >
+                  {t.roadmap}
+                </Link>
+                <Link
+                  href={withLang("/projects", lang)}
+                  className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-semibold text-white shadow-inner-glow transition hover:border-aurora-300/60 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
+                >
+                  {t.explore}
+                </Link>
+              </div>
+            </div>
+            <aside
+              className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 p-10 shadow-glow backdrop-blur-md motion-safe:opacity-0 motion-safe:animate-fade-up"
+              style={{ animationDelay: "120ms" }}
+            >
+              <div aria-hidden="true" className="pointer-events-none absolute -top-24 left-8 h-48 w-48 rounded-full bg-aurora-500/25 blur-3xl" />
+              <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-6 h-52 w-52 rounded-full bg-blush-500/20 blur-[110px]" />
+              <div className="relative space-y-6">
+                <div>
+                  <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-slate-300">{t.bestFor}</span>
+                  <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl">{t.bestTitle}</h2>
+                  <p className="text-base leading-relaxed text-slate-200 sm:text-lg">{t.bestBody}</p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {metrics.map(([label, description], index) => (
+                    <div
+                      key={label}
+                      className="rounded-2xl border border-white/15 bg-midnight-900/60 p-5 shadow-inner-glow motion-safe:opacity-0 motion-safe:animate-fade-up"
+                      style={{ animationDelay: `${index * 80}ms` }}
+                    >
+                      <span className="block text-xl font-semibold text-white">{label}</span>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-200">{description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-2xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{aiShowcase.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{aiShowcase.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{aiShowcase.lead}</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {aiShowcase.cards.map((card, index) => (
+              <article
+                key={card.title}
+                className="group relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up transition hover:-translate-y-1 hover:border-aurora-300/60 hover:bg-white/10"
+                style={{ animationDelay: `${160 + index * 90}ms` }}
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute -top-16 right-0 h-40 w-40 rounded-full bg-aurora-500/20 blur-[120px]" />
+                <div className="relative">
+                  <h3 className="text-xl font-semibold text-white">{card.title}</h3>
+                  <p className="mt-3 text-base leading-relaxed text-slate-200">{card.body}</p>
+                  <ul className="mt-6 space-y-3 text-sm text-slate-200">
+                    {card.highlights.map((highlight) => (
+                      <li key={highlight} className="flex items-start gap-3">
+                        <span className="mt-1 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-aurora-500/15 text-[11px] font-semibold text-aurora-100 ring-1 ring-aurora-400/45">•</span>
+                        <span className="leading-relaxed">{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="ai-team-checklist">
-            <h3>{t.checklistTitle}</h3>
-            <div className="ai-team-checklist__items">
-              {t.checklist.map((item) => (
-                <div key={item} className="ai-check-item">
-                  <span aria-hidden="true">✓</span>
-                  <p>{item}</p>
-                </div>
-              ))}
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="motion-safe:opacity-0 motion-safe:animate-fade-up">
+              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{voiceSection.eyebrow}</span>
+              <h2 className="mt-3 font-display text-3xl text-white sm:text-4xl">{voiceSection.title}</h2>
+              <p className="mt-4 text-lg leading-relaxed text-slate-200">{voiceSection.lead}</p>
+              <p className="mt-6 text-sm font-semibold uppercase tracking-[0.3em] text-aurora-100/80">{voiceSection.caption}</p>
+            </div>
+            <div
+              className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-aurora-500/25 via-midnight-900/60 to-aurora-300/20 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up"
+              style={{ animationDelay: "140ms" }}
+            >
+              <div aria-hidden="true" className="pointer-events-none absolute -top-20 left-10 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
+              <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 right-0 h-60 w-60 rounded-full bg-aurora-500/30 blur-[120px]" />
+              <div className="relative flex flex-col gap-6">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.32em] text-white">
+                  {voiceSection.badge}
+                </span>
+                <ul className="space-y-4 text-base leading-relaxed text-slate-100">
+                  {voiceSection.points.map((point) => (
+                    <li key={point} className="flex items-start gap-3">
+                      <span className="mt-1 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white/15 text-[11px] font-semibold text-white ring-1 ring-white/30">✓</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container feature-grid">
-          {t.features.map(([title, body]) => (
-            <article key={title} className="feature-card">
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <div className="contact-band reveal-band reveal-band--secondary">
-            <h2>{t.ctaTitle}</h2>
-            <p>{t.ctaBody}</p>
-            <Link href={withLang("/contact", lang)} className="cta-chip cta-chip--ghost">
-              {t.cta}
-            </Link>
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-2xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{featuresSection.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{featuresSection.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{featuresSection.lead}</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            {t.features.map(([title, body], index) => (
+              <article
+                key={title}
+                className="relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up transition hover:-translate-y-1 hover:border-aurora-300/60 hover:bg-white/10"
+                style={{ animationDelay: `${index * 90}ms` }}
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute -top-20 right-0 h-40 w-40 rounded-full bg-aurora-500/25 blur-[110px]" />
+                <div className="relative">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-aurora-500/20 text-aurora-100 ring-1 ring-aurora-400/45 backdrop-blur">
+                    <span className="text-sm font-semibold">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h3 className="mt-6 text-xl font-semibold text-white">{title}</h3>
+                  <p className="mt-3 text-base leading-relaxed text-slate-200">{body}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-2xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{categoriesSection.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{categoriesSection.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{categoriesSection.lead}</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {categoriesSection.categories.map(([title, body], index) => (
+              <article
+                key={title}
+                className="relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 p-6 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up transition hover:-translate-y-1 hover:border-aurora-300/60 hover:bg-white/10"
+                style={{ animationDelay: `${index * 70}ms` }}
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute -top-16 left-0 h-32 w-32 rounded-full bg-aurora-500/15 blur-[120px]" />
+                <div className="relative">
+                  <h3 className="text-lg font-semibold text-white">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-200">{body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-3xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{t.teamEyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{t.teamTitle}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{t.teamLead}</p>
+          </div>
+          <div className="mt-12 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="space-y-6">
+              <div className="rounded-3xl border border-white/12 bg-white/10 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-aurora-500/25 text-sm font-semibold text-white ring-1 ring-aurora-400/45">
+                  01
+                </span>
+                <h3 className="mt-4 text-xl font-semibold text-white">{t.coordinator.label}</h3>
+                <p className="mt-3 text-base leading-relaxed text-slate-200">{t.coordinator.body}</p>
+              </div>
+              <div className="rounded-3xl border border-white/12 bg-white/5 p-6 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up" style={{ animationDelay: "120ms" }}>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  {t.roles.map(([title, body], index) => (
+                    <article
+                      key={title}
+                      className="rounded-2xl border border-white/10 bg-midnight-900/60 p-5 shadow-inner-glow transition hover:border-aurora-300/50"
+                    >
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-aurora-500/15 text-xs font-semibold text-aurora-100 ring-1 ring-aurora-400/45">
+                        {String(index + 2).padStart(2, "0")}
+                      </span>
+                      <h4 className="mt-4 text-lg font-semibold text-white">{title}</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-200">{body}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-6">
+              <div className="rounded-3xl border border-white/12 bg-white/5 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up">
+                <h3 className="text-lg font-semibold text-white">{t.flowTitle}</h3>
+                <ol className="mt-6 space-y-4">
+                  {t.flow.map((step, index) => (
+                    <li
+                      key={step}
+                      className="flex items-start gap-4 rounded-2xl border border-white/10 bg-midnight-900/70 p-4 shadow-inner-glow"
+                    >
+                      <span className="mt-1 flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-aurora-500/20 text-xs font-semibold text-aurora-100 ring-1 ring-aurora-400/45">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-sm leading-relaxed text-slate-200 sm:text-base">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <div className="rounded-3xl border border-white/12 bg-white/5 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up" style={{ animationDelay: "120ms" }}>
+                <h3 className="text-lg font-semibold text-white">{t.checklistTitle}</h3>
+                <ul className="mt-6 space-y-4">
+                  {t.checklist.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-slate-200 sm:text-base">
+                      <span className="mt-1 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-aurora-500/25 text-xs font-bold text-midnight-950">
+                        ✓
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-2xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{technicalSection.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{technicalSection.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{technicalSection.lead}</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            {gallery.techAcademia.map((item, index) => (
+              <article
+                key={item.title}
+                className="group relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 shadow-glow transition hover:-translate-y-1 hover:border-aurora-300/50 hover:bg-white/10 motion-safe:opacity-0 motion-safe:animate-fade-up"
+                style={{ animationDelay: `${index * 110}ms` }}
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-midnight-900/60">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-midnight-950/0 via-midnight-950/20 to-aurora-500/20 opacity-0 transition duration-500 group-hover:opacity-100" />
+                </div>
+                <div className="space-y-3 px-6 py-6">
+                  <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                  <p className="text-base leading-relaxed text-slate-200">{item.caption}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-2xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{testimonials.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{testimonials.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{testimonials.lead}</p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {testimonials.items.map((item, index) => (
+              <article
+                key={item.quote}
+                className="relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 p-8 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up"
+                style={{ animationDelay: `${index * 90}ms` }}
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute -top-20 left-12 h-36 w-36 rounded-full bg-aurora-500/25 blur-[110px]" />
+                <div className="relative">
+                  <blockquote className="text-base leading-relaxed text-slate-200">“{item.quote}”</blockquote>
+                  <div className="mt-6">
+                    <span className="block text-sm font-semibold text-white">{item.name}</span>
+                    <span className="text-xs uppercase tracking-[0.22em] text-aurora-200">{item.role}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-4xl px-6 py-20 lg:py-24">
+          <div className="max-w-2xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{faq.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{faq.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{faq.lead}</p>
+          </div>
+          <div className="mt-10 space-y-4">
+            {faq.items.map((item, index) => (
+              <details
+                key={item.question}
+                className="group rounded-2xl border border-white/12 bg-white/5 p-6 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up"
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
+                <summary className="flex cursor-pointer items-center justify-between gap-4 text-left text-base font-semibold text-white">
+                  <span>{item.question}</span>
+                  <span className="text-aurora-200 transition group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-4 text-sm leading-relaxed text-slate-200">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10 pb-24 pt-20 lg:pt-24">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-gradient-to-br from-aurora-500/20 via-white/10 to-aurora-300/30 p-10 text-center shadow-glow">
+            <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-aurora-500/30 blur-3xl motion-safe:animate-pulse-soft" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-blush-500/20 blur-[120px]" />
+            <div className="relative space-y-6 motion-safe:opacity-0 motion-safe:animate-fade-up">
+              <h2 className="font-display text-3xl leading-tight text-white sm:text-4xl">{t.ctaTitle}</h2>
+              <p className="text-lg leading-relaxed text-slate-100/90">{t.ctaBody}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link
+                  href={withLang("/contact", lang)}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  {t.cta}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="relative border-t border-white/10 bg-midnight-950/70">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 -top-24 h-48 bg-gradient-to-b from-white/10 via-transparent to-transparent blur-3xl" />
+        <div className="relative mx-auto max-w-6xl px-6 py-12 lg:py-16">
+          <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] lg:grid-cols-[1.4fr_0.8fr]">
+            <div className="motion-safe:opacity-0 motion-safe:animate-fade-up">
+              <h3 className="text-xl font-semibold text-white">Tech Academia</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-300">{t.footer.tagline}</p>
+              <Link
+                href={withLang("/contact", lang)}
+                className="mt-6 inline-flex items-center justify-center rounded-full bg-aurora-500 px-6 py-3 text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
+              >
+                {t.footer.contactLabel}
+              </Link>
+            </div>
+            <nav className="motion-safe:opacity-0 motion-safe:animate-fade-up" aria-label="Footer">
+              <ul className="grid gap-3 text-sm text-slate-200">
+                {footerLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link className="transition hover:text-white" href={link.href}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+          <div className="mt-10 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.3em] text-slate-500">
+            {rights}
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
