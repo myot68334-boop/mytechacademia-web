@@ -55,6 +55,22 @@ type TechAcademiaContextValue = {
 
 const TechAcademiaContext = createContext<TechAcademiaContextValue | undefined>(undefined);
 
+function removeUndefinedValues<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => removeUndefinedValues(item)) as T;
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([, entryValue]) => entryValue !== undefined)
+        .map(([entryKey, entryValue]) => [entryKey, removeUndefinedValues(entryValue)]),
+    ) as T;
+  }
+
+  return value;
+}
+
 function shapeProfile(
   data: Partial<TechAcademiaProfile> | undefined,
   fallback: Pick<TechAcademiaProfile, 'uid' | 'email' | 'displayName'>,
@@ -116,7 +132,7 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         };
-        void setDoc(userDocRef, initialProfile, { merge: true });
+        void setDoc(userDocRef, removeUndefinedValues(initialProfile), { merge: true });
         setProfile(shapeProfile(initialProfile, profileFallback));
       }
     });
@@ -151,7 +167,7 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
     async (data: Partial<TechAcademiaProfile>) => {
       if (!user) return;
       const userDocRef = doc(db, 'users', user.uid);
-      await setDoc(userDocRef, { ...data, updatedAt: serverTimestamp() }, { merge: true });
+      await setDoc(userDocRef, removeUndefinedValues({ ...data, updatedAt: serverTimestamp() }), { merge: true });
     },
     [user],
   );
@@ -164,12 +180,12 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
       const userDocRef = doc(db, 'users', user.uid);
       await setDoc(
         userDocRef,
-        {
+        removeUndefinedValues({
           progress: {
             [courseId]: clamped,
           },
           updatedAt: serverTimestamp(),
-        },
+        }),
         { merge: true },
       );
     },
@@ -224,7 +240,7 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
       };
       await setDoc(
         chatDocRef,
-        chatData,
+        removeUndefinedValues(chatData),
         { merge: true },
       );
       setActiveChatId(chatDocRef.id);
