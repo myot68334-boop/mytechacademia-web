@@ -3,6 +3,23 @@ import { InfoCard } from "../../../components/tech-academia/info-card";
 import { PageHeader } from "../../../components/tech-academia/page-header";
 import { SectionShell } from "../../../components/tech-academia/section-shell";
 
+const aiCourses = [
+  {
+    title: "Python Beginner Course",
+    description: "Learn Python fundamentals with AI-guided explanations, practice prompts, and beginner-friendly project steps.",
+    level: "Beginner",
+    lessonCount: 6,
+    href: "/tech-academia/courses/python",
+  },
+  {
+    title: "Architecture Beginner Course",
+    description: "Build a practical architecture foundation with AI-taught lessons on space, drawings, structure, and presentation.",
+    level: "Beginner",
+    lessonCount: 6,
+    href: "/tech-academia/courses/architecture",
+  },
+];
+
 const courseGroups = [
   {
     title: "Architecture & Design",
@@ -80,6 +97,41 @@ export default function TechAcademiaCoursesPage() {
               </Link>
             }
           />
+
+          <div className="space-y-6 rounded-3xl border border-white/12 bg-white/5 p-8 shadow-glow backdrop-blur">
+            <div>
+              <h2 className="text-2xl font-semibold text-white">AI-taught starter courses</h2>
+              <p className="mt-2 text-base leading-relaxed text-slate-200">
+                Start a guided learning path and ask the AI Teacher for help at every lesson.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              {aiCourses.map((course) => (
+                <article
+                  key={course.title}
+                  className="relative overflow-hidden rounded-3xl border border-white/12 bg-midnight-900/60 p-7 shadow-inner-glow transition hover:-translate-y-1 hover:border-aurora-300/50 hover:bg-white/10"
+                >
+                  <div aria-hidden="true" className="pointer-events-none absolute -right-8 -top-12 h-40 w-40 rounded-full bg-aurora-500/20 blur-[90px]" />
+                  <div className="relative flex h-full flex-col gap-5">
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-aurora-200">
+                        <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1">{course.level}</span>
+                        <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1">{course.lessonCount} lessons</span>
+                      </div>
+                      <h3 className="text-2xl font-semibold text-white">{course.title}</h3>
+                      <p className="text-base leading-relaxed text-slate-200">{course.description}</p>
+                    </div>
+                    <Link
+                      className="mt-auto inline-flex min-h-12 items-center justify-center rounded-full bg-aurora-500 px-5 py-3 text-center text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      href={course.href}
+                    >
+                      Start Learning
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
 
           <div className="space-y-12">
             {courseGroups.map((group) => (

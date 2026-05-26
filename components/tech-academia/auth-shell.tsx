@@ -14,6 +14,10 @@ const PUBLIC_PATHS = new Set([
 ]);
 
 function isProtectedPath(pathname: string) {
+  if (pathname.startsWith('/tech-academia/courses')) {
+    return false;
+  }
+
   return pathname.startsWith('/tech-academia') && !PUBLIC_PATHS.has(pathname);
 }
 
