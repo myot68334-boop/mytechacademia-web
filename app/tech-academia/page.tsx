@@ -616,8 +616,34 @@ export default async function TechAcademiaPage({
                 </Link>
               </div>
               <div className="mt-8 rounded-3xl border border-white/12 bg-white/5 p-5 shadow-inner-glow backdrop-blur">
-                <h2 className="text-sm font-semibold uppercase tracking-[0.28em] text-aurora-200">Start using Tech Academia</h2>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.28em] text-aurora-200">Start Learning Free</h2>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                  <Link
+                    href="/courses/python"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full bg-aurora-500 px-5 py-3 text-center text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
+                  >
+                    Python Course
+                  </Link>
+                  <Link
+                    href="/courses/architecture"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-aurora-300/50 bg-aurora-500/15 px-5 py-3 text-center text-sm font-semibold text-aurora-100 shadow-inner-glow transition hover:border-aurora-200 hover:bg-aurora-500/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
+                  >
+                    Architecture Course
+                  </Link>
+                  <Link
+                    href="/tech-academia/chat"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-5 py-3 text-center text-sm font-semibold text-white shadow-inner-glow transition hover:border-aurora-300/60 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
+                  >
+                    AI Studio
+                  </Link>
+                  <Link
+                    href="/tech-academia/chat?mode=quiz"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-emerald-300/50 bg-emerald-500/15 px-5 py-3 text-center text-sm font-semibold text-emerald-100 shadow-inner-glow transition hover:border-emerald-200 hover:bg-emerald-500/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
+                  >
+                    Quiz Mode
+                  </Link>
+                </div>
+                <div className="mt-4 grid gap-3 border-t border-white/10 pt-4 sm:grid-cols-3">
                   <Link
                     href="/tech-academia/register"
                     className="inline-flex min-h-12 items-center justify-center rounded-full bg-aurora-500 px-5 py-3 text-center text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
@@ -631,20 +657,8 @@ export default async function TechAcademiaPage({
                     Login
                   </Link>
                   <Link
-                    href="/tech-academia/chat"
-                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-aurora-300/50 bg-aurora-500/15 px-5 py-3 text-center text-sm font-semibold text-aurora-100 shadow-inner-glow transition hover:border-aurora-200 hover:bg-aurora-500/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
-                  >
-                    Open AI Studio
-                  </Link>
-                  <Link
-                    href="/tech-academia/chat?mode=quiz"
-                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-emerald-300/50 bg-emerald-500/15 px-5 py-3 text-center text-sm font-semibold text-emerald-100 shadow-inner-glow transition hover:border-emerald-200 hover:bg-emerald-500/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
-                  >
-                    Try Quiz Mode
-                  </Link>
-                  <Link
                     href="/tech-academia/dashboard"
-                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/30 bg-midnight-900/70 px-5 py-3 text-center text-sm font-semibold text-white shadow-inner-glow transition hover:border-aurora-300/60 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200 sm:col-span-2 xl:col-span-1"
+                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/30 bg-midnight-900/70 px-5 py-3 text-center text-sm font-semibold text-white shadow-inner-glow transition hover:border-aurora-300/60 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aurora-200"
                   >
                     Dashboard
                   </Link>

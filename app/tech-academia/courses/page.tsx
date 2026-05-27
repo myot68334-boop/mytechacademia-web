@@ -9,14 +9,14 @@ const aiCourses = [
     description: "Learn Python fundamentals with AI-guided explanations, practice prompts, and beginner-friendly project steps.",
     level: "Beginner",
     lessonCount: 6,
-    href: "/tech-academia/courses/python",
+    href: "/courses/python",
   },
   {
     title: "Architecture Beginner Course",
     description: "Build a practical architecture foundation with AI-taught lessons on space, drawings, structure, and presentation.",
     level: "Beginner",
     lessonCount: 6,
-    href: "/tech-academia/courses/architecture",
+    href: "/courses/architecture",
   },
 ];
 
@@ -91,7 +91,7 @@ export default function TechAcademiaCoursesPage() {
             actions={
               <Link
                 className="inline-flex items-center justify-center rounded-full bg-aurora-500 px-5 py-2 text-sm font-semibold text-midnight-950 shadow-glow transition hover:bg-aurora-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                href="/tech-academia/pricing"
+                href="/pricing"
               >
                 View pricing & seats
               </Link>

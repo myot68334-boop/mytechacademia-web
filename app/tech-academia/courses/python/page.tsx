@@ -44,7 +44,7 @@ export default function PythonCoursePage() {
             actions={
               <Link
                 className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold text-white transition hover:border-aurora-300/60 hover:bg-white/20"
-                href="/tech-academia/courses"
+                href="/courses"
               >
                 Back to courses
               </Link>
