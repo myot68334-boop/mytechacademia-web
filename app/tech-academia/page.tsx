@@ -545,6 +545,183 @@ const copy = {
   },
 } as const;
 
+const aiBusinessIdeas = {
+  en: {
+    eyebrow: "AI Business Paths",
+    title: "10 online businesses you can start from home with AI",
+    lead: "Start with a laptop or phone, internet, Canva, and ChatGPT. These paths are ordered from easiest to sell first toward more advanced service packages.",
+    note: "For the first customers, prepare three samples and contact Facebook groups, local businesses, and online shop pages.",
+    items: [
+      {
+        title: "Social Media Content Service",
+        body: "Create post ideas, captions, content calendars, simple Canva designs, and campaign angles for Facebook pages and small businesses.",
+        tags: ["ChatGPT", "Canva", "Online shops", "Local businesses"],
+      },
+      {
+        title: "Short Video Script / Reel Service",
+        body: "Prepare hooks, 15-30 second scripts, captions, subtitle text, and shot lists for TikTok, Facebook Reels, and YouTube Shorts.",
+        tags: ["ChatGPT", "CapCut", "Reels", "Service pages"],
+      },
+      {
+        title: "Product Listing Service",
+        body: "Write product titles, descriptions, price notes, FAQs, keywords, and listing captions for sellers who publish many products.",
+        tags: ["ChatGPT", "Canva", "Marketplace", "Online sellers"],
+      },
+      {
+        title: "Short Video / Reel Production",
+        body: "Turn scripts into finished reels with editing, voiceover, subtitles, background music, and cover thumbnails for promotions and product reviews.",
+        tags: ["CapCut", "Canva", "Voiceover", "TikTok sellers"],
+      },
+      {
+        title: "E-commerce Product Listing Service",
+        body: "Prepare Shopify, WooCommerce, Facebook Shop, or marketplace listings with upload-ready formats, categories, options, size charts, and cleaned product photos.",
+        tags: ["Sheets", "Shopify", "Product data", "E-commerce shops"],
+      },
+      {
+        title: "Digital Product Sales",
+        body: "Create planners, checklists, worksheets, ebooks, Canva templates, or prompt packs and sell them through Facebook, Telegram, Gumroad, or Etsy.",
+        tags: ["Canva", "PDF", "Templates", "Gumroad"],
+      },
+      {
+        title: "Online Course / Tutorial Creation",
+        body: "Use AI to structure lesson outlines, slides, scripts, quizzes, and worksheets from a skill you already know.",
+        tags: ["Slides", "Zoom", "Worksheets", "Students"],
+      },
+      {
+        title: "AI Chatbot Setup Service",
+        body: "Set up FAQ answers, Messenger auto-reply flows, order response scripts, and support templates for business pages.",
+        tags: ["FAQ", "Messenger", "Auto reply", "Service pages"],
+      },
+      {
+        title: "Translation / Localization Service",
+        body: "Draft English to Myanmar or Myanmar to English translations with AI, then proofread and localize the tone for menus, websites, subtitles, documents, and ads.",
+        tags: ["Translation", "Proofread", "Subtitles", "Local brands"],
+      },
+      {
+        title: "Virtual Assistant with AI",
+        body: "Support clients with email replies, scheduling, research, data entry, summaries, and document formatting using AI to work faster.",
+        tags: ["Email", "Research", "Docs", "Remote clients"],
+      },
+    ],
+  },
+  ja: {
+    eyebrow: "AIビジネス",
+    title: "自宅からAIで始められるオンラインビジネス10選",
+    lead: "ノートPCまたはスマートフォン、インターネット、Canva、ChatGPT があれば始められます。売りやすい順から、より高度なサービスへ進める構成です。",
+    note: "最初の顧客は、サンプルを3つ用意して Facebook グループ、地域ビジネス、オンラインショップページへ提案しましょう。",
+    items: [
+      {
+        title: "SNSコンテンツ制作サービス",
+        body: "Facebookページや小規模ビジネス向けに、投稿アイデア、キャプション、カレンダー、Canvaデザイン、キャンペーン案を作成します。",
+        tags: ["ChatGPT", "Canva", "Online shops", "Local businesses"],
+      },
+      {
+        title: "ショート動画スクリプト / Reel サービス",
+        body: "TikTok、Facebook Reels、YouTube Shorts 向けに、フック、15-30秒台本、キャプション、字幕、撮影リストを準備します。",
+        tags: ["ChatGPT", "CapCut", "Reels", "Service pages"],
+      },
+      {
+        title: "商品リスティングサービス",
+        body: "商品タイトル、説明文、価格メモ、FAQ、キーワード、掲載用キャプションを作成し、商品登録の時間を短縮します。",
+        tags: ["ChatGPT", "Canva", "Marketplace", "Online sellers"],
+      },
+      {
+        title: "ショート動画 / Reel 制作",
+        body: "台本から編集、音声、字幕、BGM、サムネイルまで仕上げ、プロモーションや商品レビュー用の動画を制作します。",
+        tags: ["CapCut", "Canva", "Voiceover", "TikTok sellers"],
+      },
+      {
+        title: "EC商品リスティングサービス",
+        body: "Shopify、WooCommerce、Facebook Shop、マーケットプレイス向けに、カテゴリ、オプション、サイズ表、写真整理まで整えます。",
+        tags: ["Sheets", "Shopify", "Product data", "E-commerce shops"],
+      },
+      {
+        title: "デジタル商品の販売",
+        body: "プランナー、チェックリスト、ワークシート、電子書籍、Canvaテンプレート、プロンプト集を作り販売します。",
+        tags: ["Canva", "PDF", "Templates", "Gumroad"],
+      },
+      {
+        title: "オンライン講座 / チュートリアル制作",
+        body: "自分が知っているスキルを、AIで講座構成、スライド、台本、クイズ、ワークシートに整理します。",
+        tags: ["Slides", "Zoom", "Worksheets", "Students"],
+      },
+      {
+        title: "AIチャットボット設定サービス",
+        body: "FAQ、Messenger自動返信、注文対応、価格表返信、サポート文面をビジネスページ向けに設定します。",
+        tags: ["FAQ", "Messenger", "Auto reply", "Service pages"],
+      },
+      {
+        title: "翻訳 / ローカライズサービス",
+        body: "英語とミャンマー語の翻訳をAIで下書きし、メニュー、Web、字幕、資料、広告に自然な表現で整えます。",
+        tags: ["Translation", "Proofread", "Subtitles", "Local brands"],
+      },
+      {
+        title: "AI活用バーチャルアシスタント",
+        body: "メール返信、スケジュール、調査、データ入力、要約、文書整形をAIで効率化して支援します。",
+        tags: ["Email", "Research", "Docs", "Remote clients"],
+      },
+    ],
+  },
+  my: {
+    eyebrow: "AI အွန်လိုင်းလုပ်ငန်းများ",
+    title: "အိမ်မှာနေရင်း AI နဲ့ စနိုင်တဲ့ အွန်လိုင်းလုပ်ငန်း ၁၀ ခု",
+    lead: "Laptop သို့မဟုတ် phone, internet, Canva နဲ့ ChatGPT လောက်နဲ့ စနိုင်တဲ့ လုပ်ငန်းတွေကို အကောင်အထည်ဖော်ရလွယ်တဲ့ အစဉ်လိုက်စီထားပါတယ်။",
+    note: "ပထမဆုံး customer ရှာချင်ရင် နမူနာ ၃ ခု ပြင်ပြီး Facebook groups, local businesses, online shop pages တွေကို message ပို့ပြီး စမ်းပါ။",
+    items: [
+      {
+        title: "Social Media Content Service",
+        body: "Facebook page တွေအတွက် post idea, caption, content calendar, simple Canva design နဲ့ campaign idea တွေကို AI နဲ့ draft လုပ်ပြီး ကိုယ်တိုင်ပြင်ဆင်ပေးပါ။",
+        tags: ["ChatGPT", "Canva", "Online shops", "Local businesses"],
+      },
+      {
+        title: "Short Video Script / Reel Service",
+        body: "TikTok, Facebook Reels, YouTube Shorts အတွက် ၁၅-၃၀ စက္ကန့် video script, hook, caption, subtitle text နဲ့ shot list တွေပြင်ပေးပါ။",
+        tags: ["ChatGPT", "CapCut", "Reels", "Service pages"],
+      },
+      {
+        title: "Product Listing Service",
+        body: "Online shop တွေအတွက် product title, description, price note, FAQ, keyword, photo cleanup နဲ့ listing caption တွေပြင်ပေးပါ။",
+        tags: ["ChatGPT", "Canva", "Marketplace", "Online sellers"],
+      },
+      {
+        title: "Short Video / Reel Production",
+        body: "Script တင်မကဘဲ video cut, voiceover, subtitle, background music, cover thumbnail ပါ production အဖြစ်လုပ်ပေးပါ။",
+        tags: ["CapCut", "Canva", "Voiceover", "TikTok sellers"],
+      },
+      {
+        title: "E-commerce Product Listing Service",
+        body: "Shopify, WooCommerce, Facebook Shop, marketplace page တွေအတွက် upload format, category, option, size chart, keyword နဲ့ listing photo cleanup ကိုပြင်ပေးပါ။",
+        tags: ["Sheets", "Shopify", "Product data", "E-commerce shops"],
+      },
+      {
+        title: "Digital Product ရောင်းခြင်း",
+        body: "Planner, checklist, worksheet, ebook, Canva template, prompt pack စတာတွေကို AI နဲ့ draft လုပ်ပြီး digital file အဖြစ်ရောင်းနိုင်ပါတယ်။",
+        tags: ["Canva", "PDF", "Templates", "Gumroad"],
+      },
+      {
+        title: "Online Course / Tutorial ဖန်တီးခြင်း",
+        body: "ကိုယ်သိတဲ့ skill တစ်ခုကို lesson outline, slide, script, quiz, worksheet တွေဖြစ်အောင် AI နဲ့စီပြီး course အဖြစ်ရောင်းပါ။",
+        tags: ["Slides", "Zoom", "Worksheets", "Students"],
+      },
+      {
+        title: "AI Chatbot Setup Service",
+        body: "Business page တွေအတွက် FAQ answer, Messenger auto-reply flow, order response, price menu reply နဲ့ support script တွေ setup လုပ်ပေးပါ။",
+        tags: ["FAQ", "Messenger", "Auto reply", "Service pages"],
+      },
+      {
+        title: "Translation / Localization Service",
+        body: "English ↔ Myanmar translation ကို AI နဲ့ draft လုပ်ပြီး ကိုယ်တိုင် proofread ပြင်ဆင်ကာ menu, website, subtitle, document, ad caption တွေကို local tone နဲ့ပြင်ပေးပါ။",
+        tags: ["Translation", "Proofread", "Subtitles", "Local brands"],
+      },
+      {
+        title: "Virtual Assistant with AI",
+        body: "Email reply, schedule, research, data entry, report summary, document formatting စတဲ့ admin work တွေကို AI နဲ့ပိုမြန်အောင်လုပ်ပြီး VA service အဖြစ်ရောင်းပါ။",
+        tags: ["Email", "Research", "Docs", "Remote clients"],
+      },
+    ],
+  },
+} as const;
+
 export default async function TechAcademiaPage({
   searchParams,
 }: {
@@ -563,6 +740,7 @@ export default async function TechAcademiaPage({
   const aiShowcase = t.aiShowcase;
   const voiceSection = t.voiceSection;
   const categoriesSection = t.categoriesSection;
+  const businessSection = aiBusinessIdeas[lang];
   const testimonials = t.testimonials;
   const faq = t.faq;
   const metrics = t.heroMetrics;
@@ -692,6 +870,45 @@ export default async function TechAcademiaPage({
               </div>
             </aside>
           </div>
+        </div>
+      </section>
+
+      <section className="relative border-t border-white/10">
+        <div className="relative mx-auto max-w-6xl px-6 py-20 lg:py-24">
+          <div className="max-w-3xl space-y-4 motion-safe:opacity-0 motion-safe:animate-fade-up">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-aurora-200">{businessSection.eyebrow}</span>
+            <h2 className="font-display text-3xl text-white sm:text-4xl">{businessSection.title}</h2>
+            <p className="text-lg leading-relaxed text-slate-200">{businessSection.lead}</p>
+          </div>
+          <div className="mt-12 grid gap-5">
+            {businessSection.items.map((item, index) => (
+              <article
+                key={item.title}
+                className="relative grid gap-5 overflow-hidden rounded-3xl border border-white/12 bg-white/5 p-6 shadow-glow backdrop-blur motion-safe:opacity-0 motion-safe:animate-fade-up transition hover:-translate-y-1 hover:border-aurora-300/60 hover:bg-white/10 sm:grid-cols-[4.5rem_1fr]"
+                style={{ animationDelay: `${index * 45}ms` }}
+              >
+                <div aria-hidden="true" className="pointer-events-none absolute -right-10 top-0 h-36 w-36 rounded-full bg-aurora-500/15 blur-[100px]" />
+                <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-aurora-500/20 text-sm font-semibold text-aurora-100 ring-1 ring-aurora-400/45">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="relative">
+                  <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                  <p className="mt-3 text-base leading-relaxed text-slate-200">{item.body}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-white/15 bg-midnight-900/60 px-3 py-1 text-xs font-semibold text-slate-200 shadow-inner-glow"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="mt-8 max-w-3xl text-base leading-relaxed text-slate-300">{businessSection.note}</p>
         </div>
       </section>
 
