@@ -1,5 +1,3 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { ImageResponse } from "next/og";
 
 export const size = {
@@ -9,21 +7,7 @@ export const size = {
 
 export const contentType = "image/png";
 
-const rootDir = process.cwd();
-
-async function assetDataUri(filePath: string) {
-  const bytes = await readFile(path.join(rootDir, filePath));
-  return `data:image/png;base64,${bytes.toString("base64")}`;
-}
-
-export default async function OpenGraphImage() {
-  const [background, workJapaneseGo, zaycho, techAcademia] = await Promise.all([
-    assetDataUri("public/backgrounds/tech-academia-hero.png"),
-    assetDataUri("public/screenshots/work-japanese-go-appicon.png"),
-    assetDataUri("public/screenshots/zaycho-brand.png"),
-    assetDataUri("public/screenshots/tech-academia-appicon.png"),
-  ]);
-
+export default function OpenGraphImage() {
   return new ImageResponse(
     (
       <div
@@ -38,18 +22,6 @@ export default async function OpenGraphImage() {
           fontFamily: "Georgia, Times New Roman, serif",
         }}
       >
-        <img
-          src={background}
-          alt=""
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: 0.22,
-          }}
-        />
         <div
           style={{
             position: "absolute",
@@ -192,42 +164,54 @@ export default async function OpenGraphImage() {
                   gap: "16px",
                 }}
               >
-                <img
-                  src={workJapaneseGo}
-                  alt="WorkJapaneseGO"
+                <div
                   style={{
                     width: 118,
                     height: 118,
-                    objectFit: "contain",
                     borderRadius: 28,
-                    background: "rgba(255,255,255,0.94)",
-                    padding: 8,
+                    background: "linear-gradient(135deg, #e6f7ff, #7ec8ff)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#071120",
+                    fontSize: 42,
+                    fontWeight: 700,
                   }}
-                />
-                <img
-                  src={zaycho}
-                  alt="ZayCho"
+                >
+                  W
+                </div>
+                <div
                   style={{
                     width: 172,
                     height: 118,
-                    objectFit: "contain",
                     borderRadius: 28,
-                    background: "rgba(255,255,255,0.94)",
-                    padding: 12,
+                    background: "linear-gradient(135deg, #fff7e6, #ffd166)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#071120",
+                    fontSize: 42,
+                    fontWeight: 700,
                   }}
-                />
-                <img
-                  src={techAcademia}
-                  alt="Tech Academia"
+                >
+                  Z
+                </div>
+                <div
                   style={{
                     width: 118,
                     height: 118,
-                    objectFit: "contain",
                     borderRadius: 28,
-                    background: "rgba(255,255,255,0.94)",
-                    padding: 8,
+                    background: "linear-gradient(135deg, #eafff8, #3ddc97)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#071120",
+                    fontSize: 42,
+                    fontWeight: 700,
                   }}
-                />
+                >
+                  T
+                </div>
               </div>
 
               <div
