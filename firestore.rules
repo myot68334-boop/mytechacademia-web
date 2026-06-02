@@ -2,24 +2,75 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function hasFreeOrNoPlan() {
+      return !request.resource.data.keys().hasAny(['plan']) || request.resource.data.plan == 'free';
+    }
+
+    function keepsPlanUnchanged() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(['plan']);
+    }
+
     // Require a signed-in Firebase Auth user for every Tech Academia profile document.
     match /users/{uid} {
       // Users can read only their own profile document.
-      allow read: if request.auth != null && request.auth.uid == uid;
+      allow read: if isOwner(uid);
 
-      // Users can create only their own profile document.
-      allow create: if request.auth != null && request.auth.uid == uid;
+      // Users can create only their own profile document on the free plan.
+      allow create: if isOwner(uid) && hasFreeOrNoPlan();
 
-      // Users can update only their own profile document.
-      allow update: if request.auth != null && request.auth.uid == uid;
+      // Plan upgrades are server-only because chat quotas depend on this value.
+      allow update: if isOwner(uid) && keepsPlanUnchanged();
 
       // Users can delete only their own profile document.
-      allow delete: if request.auth != null && request.auth.uid == uid;
+      allow delete: if isOwner(uid);
 
-      // Users can access only nested documents under their own profile, such as chats.
+      // Chat quota documents are written only by trusted server code.
+      match /usage/{periodKey} {
+        allow read: if isOwner(uid);
+        allow write: if false;
+      }
+
+      match /rateLimits/{windowKey} {
+        allow read: if isOwner(uid);
+        allow write: if false;
+      }
+
+      // User memory is readable by the owner and updated through trusted server routes.
+      match /memory/{memoryId} {
+        allow read: if isOwner(uid);
+        allow write: if false;
+      }
+
+      // Users can manage only their own conversations and messages.
+      match /conversations/{conversationId} {
+        allow read, write: if isOwner(uid);
+
+        match /messages/{messageId} {
+          allow read, write: if isOwner(uid);
+        }
+      }
+
+      // AI-generated courses and progress belong only to the signed-in learner.
+      match /generatedCourses/{courseId} {
+        allow read, write: if isOwner(uid);
+
+        match /progress/{progressId} {
+          allow read, write: if isOwner(uid);
+        }
+      }
+
+      // Legacy chat documents remain owner-scoped.
+      match /chats/{chatId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // No other nested user documents are client-writable by default.
       match /{document=**} {
-        // Authenticated users can read/write nested documents only below their own uid.
-        allow read, write: if request.auth != null && request.auth.uid == uid;
+        allow read, write: if false;
       }
     }
 

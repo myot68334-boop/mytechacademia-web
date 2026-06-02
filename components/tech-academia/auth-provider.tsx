@@ -18,13 +18,23 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  orderBy,
   query,
   serverTimestamp,
   setDoc,
-  deleteDoc,
+  writeBatch,
 } from 'firebase/firestore';
-import type { ChatMessage, ChatSession, QuizScore, TechAcademiaProfile } from '../../types/tech-academia';
+import type {
+  ChatMessage,
+  ChatSession,
+  GeneratedCourse,
+  GeneratedCourseChapter,
+  GeneratedCourseProgress,
+  QuizScore,
+  TechAcademiaProfile,
+} from '../../types/tech-academia';
 import { auth, db } from '../../lib/firebase';
 import { logFirestoreSavePayload, removeUndefinedDeep } from '../../lib/tech-academia/firestore-clean';
 import { techAcademiaCourses } from '../../data/tech-academia-courses';
@@ -44,9 +54,12 @@ type TechAcademiaContextValue = {
   profile: TechAcademiaProfile | null;
   loading: boolean;
   chats: ChatSession[];
+  generatedCourses: GeneratedCourse[];
   activeChatId: string | null;
   setActiveChatId: (id: string | null) => void;
   saveChat: (chat: { id?: string; title: string; messages: ChatMessage[]; quizScore?: QuizScore }) => Promise<string | null>;
+  saveGeneratedCourse: (course: Omit<GeneratedCourse, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => Promise<string | null>;
+  updateGeneratedCourseProgress: (courseId: string, progress: GeneratedCourseProgress) => Promise<void>;
   loadChat: (chatId: string) => Promise<ChatSession | null>;
   deleteChat: (chatId: string) => Promise<void>;
   updateProfile: (data: Partial<TechAcademiaProfile>) => Promise<void>;
@@ -55,6 +68,116 @@ type TechAcademiaContextValue = {
 };
 
 const TechAcademiaContext = createContext<TechAcademiaContextValue | undefined>(undefined);
+
+type StoredConversationMessage = {
+  content?: unknown;
+  conversationId?: unknown;
+  correctAnswer?: unknown;
+  createdAt?: unknown;
+  displayTimestamp?: unknown;
+  quizResult?: unknown;
+  role?: unknown;
+  timestamp?: unknown;
+  userId?: unknown;
+};
+
+type StoredGeneratedCourse = Partial<Omit<GeneratedCourse, 'chapters' | 'progress'>> & {
+  chapters?: unknown;
+  progress?: unknown;
+};
+
+function toMillis(value: unknown, fallback = Date.now()) {
+  if (
+    value &&
+    typeof value === 'object' &&
+    'toMillis' in value &&
+    typeof value.toMillis === 'function'
+  ) {
+    return value.toMillis();
+  }
+
+  return fallback;
+}
+
+function mapStoredMessage(data: StoredConversationMessage): ChatMessage {
+  const role = data.role === 'assistant' ? 'assistant' : 'user';
+  const quizResult =
+    data.quizResult === 'correct' || data.quizResult === 'incorrect' || data.quizResult === 'none'
+      ? data.quizResult
+      : undefined;
+
+  return {
+    conversationId: typeof data.conversationId === 'string' ? data.conversationId : undefined,
+    correctAnswer: typeof data.correctAnswer === 'string' ? data.correctAnswer : undefined,
+    createdAt: typeof data.createdAt === 'string' ? data.createdAt : data.timestamp,
+    quizResult,
+    role,
+    sender: role,
+    content: typeof data.content === 'string' ? data.content : '',
+    timestamp:
+      typeof data.displayTimestamp === 'string'
+        ? data.displayTimestamp
+        : 'Saved',
+    userId: typeof data.userId === 'string' ? data.userId : undefined,
+  };
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
+}
+
+function mapStoredChapters(value: unknown): GeneratedCourseChapter[] {
+  if (!Array.isArray(value)) return [];
+
+  return value.flatMap((chapter, chapterIndex): GeneratedCourseChapter[] => {
+    if (!chapter || typeof chapter !== 'object') return [];
+    const chapterData = chapter as Partial<GeneratedCourseChapter>;
+    const lessons = Array.isArray(chapterData.lessons) ? chapterData.lessons : [];
+
+    return [
+      {
+        id: typeof chapterData.id === 'string' ? chapterData.id : `chapter-${chapterIndex + 1}`,
+        title: typeof chapterData.title === 'string' ? chapterData.title : `Chapter ${chapterIndex + 1}`,
+        lessons: lessons.flatMap((lesson, lessonIndex) => {
+          if (!lesson || typeof lesson !== 'object') return [];
+          const lessonData = lesson as GeneratedCourseChapter['lessons'][number];
+
+          return [
+            {
+              id:
+                typeof lessonData.id === 'string'
+                  ? lessonData.id
+                  : `chapter-${chapterIndex + 1}-lesson-${lessonIndex + 1}`,
+              title: typeof lessonData.title === 'string' ? lessonData.title : `Lesson ${lessonIndex + 1}`,
+              objectives: isStringArray(lessonData.objectives) ? lessonData.objectives : [],
+              duration: typeof lessonData.duration === 'string' ? lessonData.duration : 'Self-paced',
+              explanation: typeof lessonData.explanation === 'string' ? lessonData.explanation : '',
+              examples: isStringArray(lessonData.examples) ? lessonData.examples : [],
+              exercises: isStringArray(lessonData.exercises) ? lessonData.exercises : [],
+            },
+          ];
+        }),
+      },
+    ];
+  });
+}
+
+function mapStoredGeneratedCourse(id: string, data: StoredGeneratedCourse): GeneratedCourse {
+  return {
+    id,
+    title: typeof data.title === 'string' ? data.title : 'Generated course',
+    level: typeof data.level === 'string' ? data.level : 'Mixed',
+    prompt: typeof data.prompt === 'string' ? data.prompt : '',
+    objectives: isStringArray(data.objectives) ? data.objectives : [],
+    duration: typeof data.duration === 'string' ? data.duration : 'Self-paced',
+    suggestedExercises: isStringArray(data.suggestedExercises) ? data.suggestedExercises : [],
+    chapters: mapStoredChapters(data.chapters),
+    progress: data.progress as GeneratedCourseProgress | undefined,
+    createdAt: toMillis(data.createdAt),
+    updatedAt: toMillis(data.updatedAt),
+    userId: typeof data.userId === 'string' ? data.userId : undefined,
+  };
+}
 
 function shapeProfile(
   data: Partial<TechAcademiaProfile> | undefined,
@@ -78,6 +201,7 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<TechAcademiaProfile | null>(null);
   const [chats, setChats] = useState<ChatSession[]>([]);
+  const [generatedCourses, setGeneratedCourses] = useState<GeneratedCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
@@ -94,6 +218,7 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
     if (!user) {
       setProfile(null);
       setChats([]);
+      setGeneratedCourses([]);
       setActiveChatId(null);
       return;
     }
@@ -124,29 +249,39 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
       }
     });
 
-    const chatsCollection = collection(userDocRef, 'chats');
+    const chatsCollection = collection(userDocRef, 'conversations');
     const chatsQuery = query(chatsCollection);
     const unsubscribeChats = onSnapshot(chatsQuery, (snapshot) => {
       const nextChats: ChatSession[] = snapshot.docs.map((docSnapshot) => {
         const data = docSnapshot.data();
-        const createdAt = data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now();
-        const updatedAt = data.updatedAt?.toMillis ? data.updatedAt.toMillis() : createdAt;
+        const createdAt = toMillis(data.createdAt);
+        const updatedAt = toMillis(data.updatedAt, createdAt);
         return {
           id: docSnapshot.id,
           title: data.title ?? 'Untitled session',
           summary: data.summary ?? '',
           createdAt,
           updatedAt,
-          messages: (data.messages ?? []) as ChatMessage[],
+          messages: [],
           quizScore: data.quizScore as QuizScore | undefined,
         };
       });
       setChats(nextChats.sort((a, b) => b.updatedAt - a.updatedAt));
     });
 
+    const generatedCoursesCollection = collection(userDocRef, 'generatedCourses');
+    const generatedCoursesQuery = query(generatedCoursesCollection);
+    const unsubscribeGeneratedCourses = onSnapshot(generatedCoursesQuery, (snapshot) => {
+      const nextCourses = snapshot.docs.map((docSnapshot) =>
+        mapStoredGeneratedCourse(docSnapshot.id, docSnapshot.data() as StoredGeneratedCourse),
+      );
+      setGeneratedCourses(nextCourses.sort((a, b) => Number(b.updatedAt ?? 0) - Number(a.updatedAt ?? 0)));
+    });
+
     return () => {
       unsubscribeProfile();
       unsubscribeChats();
+      unsubscribeGeneratedCourses();
     };
   }, [user]);
 
@@ -190,19 +325,24 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
   const loadChat = useCallback(
     async (chatId: string) => {
       if (!user) return null;
-      const chatDocRef = doc(db, 'users', user.uid, 'chats', chatId);
+      const chatDocRef = doc(db, 'users', user.uid, 'conversations', chatId);
       const snapshot = await getDoc(chatDocRef);
       if (!snapshot.exists()) return null;
       const data = snapshot.data();
-      const createdAt = data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now();
-      const updatedAt = data.updatedAt?.toMillis ? data.updatedAt.toMillis() : createdAt;
+      const createdAt = toMillis(data.createdAt);
+      const updatedAt = toMillis(data.updatedAt, createdAt);
+      const messagesCollection = collection(chatDocRef, 'messages');
+      const messagesSnapshot = await getDocs(query(messagesCollection, orderBy('order', 'asc')));
+      const messages = messagesSnapshot.docs.map((messageSnapshot) =>
+        mapStoredMessage(messageSnapshot.data() as StoredConversationMessage),
+      );
       const chat: ChatSession = {
         id: snapshot.id,
         title: data.title ?? 'Untitled session',
         summary: data.summary ?? '',
         createdAt,
         updatedAt,
-        messages: (data.messages ?? []) as ChatMessage[],
+        messages,
         quizScore: data.quizScore as QuizScore | undefined,
       };
       setActiveChatId(chat.id);
@@ -215,12 +355,16 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
     async ({ id, title, messages, quizScore }: { id?: string; title: string; messages: ChatMessage[]; quizScore?: QuizScore }) => {
       if (!user) return null;
       const userDocRef = doc(db, 'users', user.uid);
-      const chatsCollection = collection(userDocRef, 'chats');
+      const chatsCollection = collection(userDocRef, 'conversations');
       const chatDocRef = id ? doc(chatsCollection, id) : doc(chatsCollection);
+      const assistantSummary = messages.find((message) => message.sender === 'assistant')?.content?.slice(0, 160) ?? '';
       const chatData = {
         title: title || 'Untitled session',
-        messages,
-        summary: messages.find((message) => message.sender === 'assistant')?.content?.slice(0, 160) ?? '',
+        conversationId: chatDocRef.id,
+        lastMessagePreview: messages.at(-1)?.content?.slice(0, 160) ?? '',
+        messageCount: messages.length,
+        summary: assistantSummary,
+        userId: user.uid,
         updatedAt: serverTimestamp(),
         ...(quizScore ? { quizScore } : {}),
         ...(id ? {} : { createdAt: serverTimestamp() }),
@@ -228,8 +372,82 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
       const cleanChatData = removeUndefinedDeep(chatData);
       logFirestoreSavePayload(cleanChatData);
       await setDoc(chatDocRef, cleanChatData, { merge: true });
+
+      const batch = writeBatch(db);
+      messages.forEach((message, index) => {
+        const messageDocRef = doc(chatDocRef, 'messages', String(index).padStart(4, '0'));
+        const role = message.sender;
+        const messageData = removeUndefinedDeep({
+          content: message.content,
+          conversationId: chatDocRef.id,
+          correctAnswer: message.correctAnswer,
+          createdAt: typeof message.createdAt === 'string' ? message.createdAt : new Date().toISOString(),
+          displayTimestamp: message.timestamp,
+          order: index,
+          quizResult: message.quizResult,
+          role,
+          userId: user.uid,
+        });
+        batch.set(messageDocRef, messageData, { merge: true });
+      });
+      await batch.commit();
+
       setActiveChatId(chatDocRef.id);
       return chatDocRef.id;
+    },
+    [user],
+  );
+
+  const saveGeneratedCourse = useCallback(
+    async (course: Omit<GeneratedCourse, 'id' | 'createdAt' | 'updatedAt' | 'userId'>) => {
+      if (!user) return null;
+      const userDocRef = doc(db, 'users', user.uid);
+      const courseDocRef = doc(collection(userDocRef, 'generatedCourses'));
+      const totalLessons = course.chapters.reduce((sum, chapter) => sum + chapter.lessons.length, 0);
+      const progress: GeneratedCourseProgress = {
+        completedLessonIds: [],
+        completedLessons: 0,
+        currentLessonId: course.chapters[0]?.lessons[0]?.id,
+        percent: 0,
+        totalLessons,
+      };
+      const courseData = removeUndefinedDeep({
+        ...course,
+        progress,
+        userId: user.uid,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+      logFirestoreSavePayload(courseData);
+      await setDoc(courseDocRef, courseData);
+      const progressData = removeUndefinedDeep({
+        ...progress,
+        updatedAt: serverTimestamp(),
+      });
+      await setDoc(doc(courseDocRef, 'progress', 'state'), progressData);
+      return courseDocRef.id;
+    },
+    [user],
+  );
+
+  const updateGeneratedCourseProgress = useCallback(
+    async (courseId: string, progress: GeneratedCourseProgress) => {
+      if (!user) return;
+      const courseDocRef = doc(db, 'users', user.uid, 'generatedCourses', courseId);
+      const cleanProgress = removeUndefinedDeep({
+        ...progress,
+        updatedAt: serverTimestamp(),
+      });
+      logFirestoreSavePayload(cleanProgress);
+      await setDoc(doc(courseDocRef, 'progress', 'state'), cleanProgress, { merge: true });
+      await setDoc(
+        courseDocRef,
+        removeUndefinedDeep({
+          progress,
+          updatedAt: serverTimestamp(),
+        }),
+        { merge: true },
+      );
     },
     [user],
   );
@@ -237,8 +455,14 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
   const deleteChat = useCallback(
     async (chatId: string) => {
       if (!user) return;
-      const chatDocRef = doc(db, 'users', user.uid, 'chats', chatId);
-      await deleteDoc(chatDocRef);
+      const chatDocRef = doc(db, 'users', user.uid, 'conversations', chatId);
+      const messagesSnapshot = await getDocs(collection(chatDocRef, 'messages'));
+      const batch = writeBatch(db);
+      messagesSnapshot.docs.forEach((messageSnapshot) => {
+        batch.delete(messageSnapshot.ref);
+      });
+      batch.delete(chatDocRef);
+      await batch.commit();
       if (activeChatId === chatId) {
         setActiveChatId(null);
       }
@@ -252,16 +476,34 @@ export function TechAcademiaProvider({ children }: { children: ReactNode }) {
       profile,
       loading,
       chats,
+      generatedCourses,
       activeChatId,
       setActiveChatId,
       saveChat,
+      saveGeneratedCourse,
+      updateGeneratedCourseProgress,
       loadChat,
       deleteChat,
       updateProfile,
       updateProgress,
       signOut,
     }),
-    [user, profile, loading, chats, activeChatId, saveChat, loadChat, deleteChat, updateProfile, updateProgress, signOut],
+    [
+      user,
+      profile,
+      loading,
+      chats,
+      generatedCourses,
+      activeChatId,
+      saveChat,
+      saveGeneratedCourse,
+      updateGeneratedCourseProgress,
+      loadChat,
+      deleteChat,
+      updateProfile,
+      updateProgress,
+      signOut,
+    ],
   );
 
   return <TechAcademiaContext.Provider value={value}>{children}</TechAcademiaContext.Provider>;

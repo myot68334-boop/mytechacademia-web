@@ -1,10 +1,13 @@
-import { NextResponse } from 'next/server';
-import { readUserMemory } from '../../../../lib/tech-academia/chat-memory';
-import { buildChatSystemMessages } from '../../../../lib/tech-academia/chat-prompts';
-import { adminAuth } from '../../../../lib/tech-academia/firebase-admin';
-import { createGeminiChatCompletion, GeminiError } from '../../../../lib/tech-academia/gemini';
-import { checkAndIncrementChatQuota, QuotaError } from '../../../../lib/tech-academia/quotas';
-import { CHAT_MODES, type ChatApiErrorResponse, type ChatApiHistoryMessage, type ChatApiRequestBody, type ChatApiResponse, type ChatMode } from '../../../../types/chat';
+import { readUserMemory } from '../../../../../lib/tech-academia/chat-memory';
+import { buildChatSystemMessages } from '../../../../../lib/tech-academia/chat-prompts';
+import { adminAuth } from '../../../../../lib/tech-academia/firebase-admin';
+import {
+  createGeminiChatCompletionStream,
+  GeminiError,
+  type GeminiMessage,
+} from '../../../../../lib/tech-academia/gemini';
+import { checkAndIncrementChatQuota, QuotaError } from '../../../../../lib/tech-academia/quotas';
+import { CHAT_MODES, type ChatApiHistoryMessage, type ChatApiRequestBody, type ChatMode } from '../../../../../types/chat';
 
 export const runtime = 'nodejs';
 
@@ -24,14 +27,6 @@ function getBearerToken(request: Request) {
 
 function isChatMode(mode: unknown): mode is ChatMode {
   return typeof mode === 'string' && CHAT_MODES.includes(mode as ChatMode);
-}
-
-function jsonError(
-  code: ChatApiErrorResponse['code'],
-  error: string,
-  status: number,
-) {
-  return NextResponse.json<ChatApiErrorResponse>({ code, error }, { status });
 }
 
 function getChatHistory(history: unknown): ChatApiHistoryMessage[] {
@@ -57,7 +52,6 @@ function getChatHistory(history: unknown): ChatApiHistoryMessage[] {
       }
 
       const trimmedContent = content.trim();
-
       if (!trimmedContent) return [];
 
       return [
@@ -69,28 +63,43 @@ function getChatHistory(history: unknown): ChatApiHistoryMessage[] {
     });
 }
 
-function parseQuizResult(content: string) {
-  const match = content.match(/^\s*\[\[QUIZ_RESULT:(none|correct|incorrect)(?:;ANSWER:([A-D]?))?\]\]\s*/i);
-  const visibleCorrectAnswer = content.match(/correct answer\s*:?\s*([A-D])/i)?.[1]?.toUpperCase();
+function jsonError(code: string, error: string, status: number) {
+  return Response.json({ code, error }, { status });
+}
 
-  if (!match) {
+function encodeSse(event: string, data: unknown) {
+  return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+}
+
+function getSafeStreamError(error: unknown) {
+  if (error instanceof GeminiError) {
     return {
-      correctAnswer: visibleCorrectAnswer,
-      content,
-      quizResult: 'none' as const,
+      code: error.code,
+      message:
+        error.code === 'AI_CONFIG_MISSING'
+          ? 'AI service is not configured.'
+          : 'AI response failed. Please try again.',
     };
   }
 
   return {
-    correctAnswer: match[2]?.toUpperCase() || visibleCorrectAnswer,
-    content: content.slice(match[0].length).trim(),
-    quizResult: match[1].toLowerCase() as 'none' | 'correct' | 'incorrect',
+    code: 'STREAM_INTERRUPTED',
+    message: 'Connection was interrupted. Please retry.',
   };
 }
 
-function getSafeAssistantContent(content: string, fallback: string) {
-  const trimmedContent = content.trim();
-  return trimmedContent || fallback.trim() || 'Unable to generate a response. Please try again.';
+async function pumpGeminiStream(
+  stream: Awaited<ReturnType<typeof createGeminiChatCompletionStream>>['stream'],
+  controller: ReadableStreamDefaultController<Uint8Array>,
+  encoder: TextEncoder,
+) {
+  for await (const chunk of stream) {
+    const token = chunk.text;
+
+    if (token) {
+      controller.enqueue(encoder.encode(encodeSse('token', { content: token })));
+    }
+  }
 }
 
 export async function POST(request: Request) {
@@ -113,7 +122,6 @@ export async function POST(request: Request) {
     }
 
     const message = body.message.trim();
-    const history = getChatHistory(body.history);
 
     if (!message) {
       return jsonError('MESSAGE_REQUIRED', 'Message is required.', 400);
@@ -127,37 +135,59 @@ export async function POST(request: Request) {
       );
     }
 
+    const history = getChatHistory(body.history);
     await checkAndIncrementChatQuota(decodedToken.uid);
     const memory = await readUserMemory(decodedToken.uid);
 
-    const completion = await createGeminiChatCompletion({
-      messages: [
-        ...buildChatSystemMessages(body.mode, memory),
-        ...history,
-        {
-          role: 'user',
-          content: message,
-        },
-      ],
-    });
-    const parsedQuizResponse = body.mode === 'quiz' ? parseQuizResult(completion.content) : null;
-    const assistantContent = getSafeAssistantContent(
-      parsedQuizResponse?.content ?? completion.content,
-      completion.content,
-    );
-    const responseBody: ChatApiResponse = {
-      uid: decodedToken.uid,
-      mode: body.mode,
-      correctAnswer: parsedQuizResponse?.correctAnswer,
-      quizResult: parsedQuizResponse?.quizResult,
-      message: {
-        role: 'assistant',
-        content: assistantContent,
-        model: completion.model,
+    const messages: GeminiMessage[] = [
+      ...buildChatSystemMessages(body.mode, memory),
+      ...history,
+      {
+        role: 'user',
+        content: message,
       },
-    };
+    ];
+    const completion = await createGeminiChatCompletionStream({ messages });
+    const encoder = new TextEncoder();
 
-    return NextResponse.json(responseBody);
+    const readable = new ReadableStream<Uint8Array>({
+      async start(controller) {
+        try {
+          controller.enqueue(
+            encoder.encode(
+              encodeSse('meta', {
+                mode: body.mode,
+                model: completion.model,
+                uid: decodedToken.uid,
+              }),
+            ),
+          );
+          await pumpGeminiStream(completion.stream, controller, encoder);
+          controller.enqueue(
+            encoder.encode(
+              encodeSse('done', {
+                mode: body.mode,
+                model: completion.model,
+                uid: decodedToken.uid,
+              }),
+            ),
+          );
+          controller.close();
+        } catch (streamError) {
+          controller.enqueue(encoder.encode(encodeSse('error', getSafeStreamError(streamError))));
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(readable, {
+      headers: {
+        'Cache-Control': 'no-cache, no-transform',
+        Connection: 'keep-alive',
+        'Content-Type': 'text/event-stream; charset=utf-8',
+        'X-Accel-Buffering': 'no',
+      },
+    });
   } catch (error) {
     if (error instanceof QuotaError) {
       return jsonError(error.code, error.message, error.status);
