@@ -28,6 +28,7 @@ type Message = {
 };
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
+type GeneratedCourseDraft = Omit<GeneratedCourse, "id" | "createdAt" | "updatedAt" | "userId">;
 
 const chatModes: Array<{ value: ChatMode; label: string; description: string }> = [
   {
@@ -164,38 +165,101 @@ function getStringArray(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0) : [];
 }
 
-function extractJsonPayload(content: string) {
-  const fenced = content.match(/```(?:json)?\s*([\s\S]*?)```/i)?.[1];
-  const raw = fenced ?? content;
-  const start = raw.indexOf("{");
-  const end = raw.lastIndexOf("}");
-
-  if (start === -1 || end === -1 || end <= start) {
-    throw new Error("The generated course was not valid JSON. Please try Generate Course again.");
-  }
-
-  return raw.slice(start, end + 1);
+function getFirstString(value: unknown, fallback: string) {
+  return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
 
-function parseGeneratedCourse(content: string, prompt: string): Omit<GeneratedCourse, "id" | "createdAt" | "updatedAt" | "userId"> {
-  const parsed = JSON.parse(extractJsonPayload(content)) as Record<string, unknown>;
+function stripJsonNoise(value: string) {
+  return value
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .replace(/,\s*([}\]])/g, "$1");
+}
+
+function findBalancedJsonObject(value: string) {
+  const text = stripJsonNoise(value);
+  const firstBrace = text.indexOf("{");
+  if (firstBrace === -1) return null;
+
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let index = firstBrace; index < text.length; index += 1) {
+    const char = text[index];
+
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+
+    if (char === "\\") {
+      escaped = true;
+      continue;
+    }
+
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+
+    if (inString) continue;
+
+    if (char === "{") depth += 1;
+    if (char === "}") depth -= 1;
+
+    if (depth === 0) {
+      return text.slice(firstBrace, index + 1);
+    }
+  }
+
+  return null;
+}
+
+function parseJsonObject(content: string) {
+  const candidates = [
+    content,
+    content.match(/```json\s*([\s\S]*?)```/i)?.[1],
+    content.match(/```\s*([\s\S]*?)```/i)?.[1],
+    findBalancedJsonObject(content),
+  ].filter((candidate): candidate is string => Boolean(candidate));
+
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(stripJsonNoise(candidate)) as unknown;
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        return parsed as Record<string, unknown>;
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  throw new Error("Generated course JSON could not be parsed.");
+}
+
+function normalizeGeneratedCourse(parsed: Record<string, unknown>, prompt: string): GeneratedCourseDraft {
   const rawChapters = Array.isArray(parsed.chapters) ? parsed.chapters : [];
   const chapters: GeneratedCourseChapter[] = rawChapters.map((chapter, chapterIndex) => {
     const chapterData = chapter && typeof chapter === "object" ? (chapter as Record<string, unknown>) : {};
-    const chapterTitle = typeof chapterData.title === "string" ? chapterData.title : `Chapter ${chapterIndex + 1}`;
+    const chapterTitle = getFirstString(chapterData.title, `Chapter ${chapterIndex + 1}`);
     const rawLessons = Array.isArray(chapterData.lessons) ? chapterData.lessons : [];
     const lessons: GeneratedCourseLesson[] = rawLessons.map((lesson, lessonIndex) => {
       const lessonData = lesson && typeof lesson === "object" ? (lesson as Record<string, unknown>) : {};
-      const lessonTitle = typeof lessonData.title === "string" ? lessonData.title : `Lesson ${lessonIndex + 1}`;
+      const lessonTitle = getFirstString(lessonData.title, `Lesson ${lessonIndex + 1}`);
+      const objectives = getStringArray(lessonData.objectives);
+      const exercises = getStringArray(lessonData.exercises);
+      const examples = getStringArray(lessonData.examples);
 
       return {
         id: `${slugify(chapterTitle, `chapter-${chapterIndex + 1}`)}-${slugify(lessonTitle, `lesson-${lessonIndex + 1}`)}`,
         title: lessonTitle,
-        objectives: getStringArray(lessonData.objectives),
-        duration: typeof lessonData.duration === "string" ? lessonData.duration : "Self-paced",
-        explanation: typeof lessonData.explanation === "string" ? lessonData.explanation : "",
-        examples: getStringArray(lessonData.examples),
-        exercises: getStringArray(lessonData.exercises),
+        objectives: objectives.length ? objectives : [lessonTitle],
+        duration: getFirstString(lessonData.duration, "Self-paced"),
+        explanation: getFirstString(lessonData.explanation, lessonTitle),
+        examples,
+        exercises: exercises.length ? exercises : examples,
       };
     });
 
@@ -206,18 +270,173 @@ function parseGeneratedCourse(content: string, prompt: string): Omit<GeneratedCo
     };
   });
 
-  return {
-    title: typeof parsed.title === "string" ? parsed.title : "Generated course",
-    level: typeof parsed.level === "string" ? parsed.level : "Beginner to advanced",
+  const course = {
+    title: getFirstString(parsed.title, "Generated course"),
+    level: getFirstString(parsed.level, "Beginner to advanced"),
     prompt,
     objectives: getStringArray(parsed.objectives),
-    duration: typeof parsed.duration === "string" ? parsed.duration : "Self-paced",
+    duration: getFirstString(parsed.duration, "Self-paced"),
     suggestedExercises: getStringArray(parsed.suggestedExercises),
     chapters,
   };
+
+  if (!course.chapters.length || !course.chapters.some((chapter) => chapter.lessons.length)) {
+    throw new Error("Generated course did not include structured chapters and lessons.");
+  }
+
+  return course;
 }
 
-function summarizeGeneratedCourse(course: Omit<GeneratedCourse, "id" | "createdAt" | "updatedAt" | "userId">) {
+function parseGeneratedCourseJson(content: string, prompt: string): GeneratedCourseDraft {
+  return normalizeGeneratedCourse(parseJsonObject(content), prompt);
+}
+
+function cleanMarkdownLine(value: string) {
+  return value
+    .replace(/^#{1,6}\s*/, "")
+    .replace(/^\s*[-*+]\s*/, "")
+    .replace(/^\s*\d+[.)]\s*/, "")
+    .replace(/\*\*/g, "")
+    .trim();
+}
+
+function isChapterLine(value: string) {
+  return /^(chapter|module|week|unit)\b/i.test(value) || /^အခန်း\b/.test(value) || /^第.+章/.test(value);
+}
+
+function isLessonLine(value: string) {
+  return /^(lesson|class|section)\b/i.test(value) || /^သင်ခန်းစာ\b/.test(value) || /^レッスン\b/.test(value);
+}
+
+function parseLabelValue(value: string, labels: string[]) {
+  const pattern = new RegExp(`^(?:${labels.join("|")})\\s*[:：-]\\s*(.+)$`, "i");
+  return value.match(pattern)?.[1]?.trim();
+}
+
+function ensureMarkdownLesson(chapter: GeneratedCourseChapter, fallbackIndex: number) {
+  if (chapter.lessons.length) return chapter.lessons[chapter.lessons.length - 1];
+
+  const lesson: GeneratedCourseLesson = {
+    id: `${chapter.id}-lesson-${fallbackIndex}`,
+    title: `Lesson ${fallbackIndex}`,
+    objectives: [],
+    duration: "Self-paced",
+    explanation: "",
+    examples: [],
+    exercises: [],
+  };
+  chapter.lessons.push(lesson);
+  return lesson;
+}
+
+function convertMarkdownCourse(content: string, prompt: string): GeneratedCourseDraft {
+  const lines = content
+    .split(/\r?\n/)
+    .map(cleanMarkdownLine)
+    .filter(Boolean);
+  const title = lines.find((line) => !isChapterLine(line) && !isLessonLine(line)) ?? prompt;
+  const chapters: GeneratedCourseChapter[] = [];
+  let currentChapter: GeneratedCourseChapter | null = null;
+  let currentLesson: GeneratedCourseLesson | null = null;
+  let lessonCounter = 0;
+  let duration = "Self-paced";
+  let level = /advanced/i.test(content) ? "Beginner to advanced" : "Beginner";
+
+  for (const line of lines) {
+    const levelValue = parseLabelValue(line, ["level", "အဆင့်", "レベル"]);
+    const durationValue = parseLabelValue(line, ["duration", "estimated duration", "ကြာချိန်", "期間"]);
+    const exerciseValue = parseLabelValue(line, ["exercise", "exercises", "practice", "လေ့ကျင့်ခန်း", "練習"]);
+    const objectiveValue = parseLabelValue(line, ["objective", "objectives", "learning objective", "ရည်မှန်းချက်", "目標"]);
+
+    if (levelValue) level = levelValue;
+    if (durationValue) duration = durationValue;
+
+    if (isChapterLine(line) || /^#{1,2}\s/.test(line)) {
+      const chapterTitle = line.replace(/^(chapter|module|week|unit)\s*\d*\s*[:：.-]?\s*/i, "").trim() || line;
+      currentChapter = {
+        id: slugify(chapterTitle, `chapter-${chapters.length + 1}`),
+        title: chapterTitle,
+        lessons: [],
+      };
+      chapters.push(currentChapter);
+      currentLesson = null;
+      continue;
+    }
+
+    if (isLessonLine(line)) {
+      if (!currentChapter) {
+        currentChapter = {
+          id: "chapter-1",
+          title: title === line ? "Chapter 1" : title,
+          lessons: [],
+        };
+        chapters.push(currentChapter);
+      }
+      lessonCounter += 1;
+      const lessonTitle = line.replace(/^(lesson|class|section)\s*\d*\s*[:：.-]?\s*/i, "").trim() || line;
+      currentLesson = {
+        id: `${currentChapter.id}-${slugify(lessonTitle, `lesson-${lessonCounter}`)}`,
+        title: lessonTitle,
+        objectives: [],
+        duration: "Self-paced",
+        explanation: "",
+        examples: [],
+        exercises: [],
+      };
+      currentChapter.lessons.push(currentLesson);
+      continue;
+    }
+
+    if (!currentChapter) {
+      currentChapter = {
+        id: "chapter-1",
+        title: title,
+        lessons: [],
+      };
+      chapters.push(currentChapter);
+    }
+
+    currentLesson = currentLesson ?? ensureMarkdownLesson(currentChapter, lessonCounter + 1);
+
+    if (durationValue) currentLesson.duration = durationValue;
+    if (objectiveValue) currentLesson.objectives.push(objectiveValue);
+    if (exerciseValue) currentLesson.exercises.push(exerciseValue);
+    if (/example|ဥပမာ|例/.test(line)) currentLesson.examples.push(line);
+    if (!durationValue && !objectiveValue && !exerciseValue && line !== title) {
+      currentLesson.explanation = currentLesson.explanation ? `${currentLesson.explanation}\n${line}` : line;
+    }
+  }
+
+  const normalizedChapters = chapters
+    .map((chapter) => ({
+      ...chapter,
+      lessons: chapter.lessons.map((lesson, lessonIndex) => ({
+        ...lesson,
+        objectives: lesson.objectives.length ? lesson.objectives : [lesson.title],
+        duration: lesson.duration || "Self-paced",
+        explanation: lesson.explanation || lesson.title,
+        exercises: lesson.exercises.length ? lesson.exercises : [`Practice: ${lesson.title}`],
+        id: lesson.id || `${chapter.id}-lesson-${lessonIndex + 1}`,
+      })),
+    }))
+    .filter((chapter) => chapter.lessons.length);
+
+  if (!normalizedChapters.length) {
+    throw new Error("Unable to convert markdown course into structured lessons.");
+  }
+
+  return {
+    title,
+    level,
+    prompt,
+    objectives: normalizedChapters.flatMap((chapter) => chapter.lessons.flatMap((lesson) => lesson.objectives)).slice(0, 6),
+    duration,
+    suggestedExercises: normalizedChapters.flatMap((chapter) => chapter.lessons.flatMap((lesson) => lesson.exercises)).slice(0, 8),
+    chapters: normalizedChapters,
+  };
+}
+
+function summarizeGeneratedCourse(course: GeneratedCourseDraft) {
   const totalLessons = course.chapters.reduce((sum, chapter) => sum + chapter.lessons.length, 0);
   return [
     `Generated course: ${course.title}`,
@@ -232,6 +451,18 @@ function summarizeGeneratedCourse(course: Omit<GeneratedCourse, "id" | "createdA
 
 function getCourseLessons(course: GeneratedCourse | null) {
   return course?.chapters.flatMap((chapter) => chapter.lessons.map((lesson) => ({ chapter, lesson }))) ?? [];
+}
+
+function buildCourseJsonRetryPrompt(originalPrompt: string, previousResponse: string) {
+  return [
+    "Convert the previous course response into STRICT JSON only.",
+    "No markdown. No code fence. No prose before or after JSON.",
+    "Keep all user-facing strings in the same language as the original learner request.",
+    "Required JSON shape:",
+    '{"title":"string","level":"string","objectives":["string"],"duration":"string","suggestedExercises":["string"],"chapters":[{"title":"string","lessons":[{"title":"string","objectives":["string"],"duration":"string","explanation":"string","examples":["string"],"exercises":["string"]}]}]}',
+    `Original request: ${originalPrompt}`,
+    `Previous response to convert: ${previousResponse.slice(0, 6000)}`,
+  ].join("\n");
 }
 
 export default function TechAcademiaChatPage() {
@@ -431,6 +662,11 @@ export default function TechAcademiaChatPage() {
     await saveCourseProgress(activeCourse, currentLesson.id, [...completedLessonIds, currentLesson.id]);
   };
 
+  const handleSelectGeneratedLesson = async (lessonId: string) => {
+    if (!activeCourse || submitting || streaming) return;
+    await saveCourseProgress(activeCourse, lessonId, completedLessonIds);
+  };
+
   const handleEndQuiz = async () => {
     if (submitting || streaming) return;
 
@@ -480,7 +716,7 @@ export default function TechAcademiaChatPage() {
       createdAt: new Date().toISOString(),
       id: assistantMessageId,
       role: "assistant",
-      content: "",
+      content: "Generating a structured course...",
       timestamp: getTimestamp(),
     };
 
@@ -493,28 +729,50 @@ export default function TechAcademiaChatPage() {
         throw new Error("Please sign in again before generating a course.");
       }
 
-      await streamChat(
-        {
-          mode: "courseGenerator",
-          message: nextMessage,
-          history: toApiHistory(messages),
-        },
-        {
-          token,
-          onToken: (tokenChunk) => {
-            streamedAssistantContent += tokenChunk;
-            setMessages((currentMessages) =>
-              currentMessages.map((message) =>
-                message.id === assistantMessageId
-                  ? { ...message, content: streamedAssistantContent }
-                  : message,
-              ),
-            );
+      const requestStructuredCourse = async (message: string) => {
+        let responseContent = "";
+        await streamChat(
+          {
+            mode: "courseGenerator",
+            message,
+            history: toApiHistory(messages),
           },
-        },
-      );
+          {
+            token,
+            onToken: (tokenChunk) => {
+              responseContent += tokenChunk;
+            },
+          },
+        );
+        return responseContent.trim();
+      };
 
-      const generatedCourse = parseGeneratedCourse(streamedAssistantContent.trim(), nextMessage);
+      streamedAssistantContent = await requestStructuredCourse(nextMessage);
+
+      let generatedCourse: GeneratedCourseDraft;
+      try {
+        generatedCourse = parseGeneratedCourseJson(streamedAssistantContent, nextMessage);
+      } catch {
+        setMessages((currentMessages) =>
+          currentMessages.map((message) =>
+            message.id === assistantMessageId
+              ? { ...message, content: "Formatting the course into structured cards..." }
+              : message,
+          ),
+        );
+
+        const retryContent = await requestStructuredCourse(buildCourseJsonRetryPrompt(nextMessage, streamedAssistantContent));
+        try {
+          generatedCourse = parseGeneratedCourseJson(retryContent, nextMessage);
+        } catch {
+          try {
+            generatedCourse = convertMarkdownCourse(retryContent, nextMessage);
+          } catch {
+            generatedCourse = convertMarkdownCourse(streamedAssistantContent, nextMessage);
+          }
+        }
+      }
+
       const savedCourseId = await saveGeneratedCourse(generatedCourse);
       const assistantMessage: Message = {
         createdAt: streamingAssistantMessage.createdAt,
@@ -901,8 +1159,8 @@ export default function TechAcademiaChatPage() {
                           <div className="mt-4">
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-aurora-200">Objectives</p>
                             <ul className="mt-2 space-y-1 text-sm text-slate-300">
-                              {currentLesson.objectives.slice(0, 3).map((objective) => (
-                                <li key={objective}>- {objective}</li>
+                              {currentLesson.objectives.slice(0, 3).map((objective, objectiveIndex) => (
+                                <li key={`${objective}-${objectiveIndex}`}>- {objective}</li>
                               ))}
                             </ul>
                           </div>
@@ -912,14 +1170,69 @@ export default function TechAcademiaChatPage() {
                           <div className="mt-4">
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-aurora-200">Exercises</p>
                             <ul className="mt-2 space-y-1 text-sm text-slate-300">
-                              {currentLesson.exercises.slice(0, 3).map((exercise) => (
-                                <li key={exercise}>- {exercise}</li>
+                              {currentLesson.exercises.slice(0, 3).map((exercise, exerciseIndex) => (
+                                <li key={`${exercise}-${exerciseIndex}`}>- {exercise}</li>
                               ))}
                             </ul>
                           </div>
                         ) : null}
                       </div>
                     ) : null}
+
+                    <div className="space-y-3">
+                      {activeCourse.chapters.map((chapter, chapterIndex) => (
+                        <div key={chapter.id} className="rounded-2xl border border-white/10 bg-midnight-900/60 p-4">
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+                                Chapter {chapterIndex + 1}
+                              </p>
+                              <h4 className="mt-1 text-sm font-semibold text-white">{chapter.title}</h4>
+                            </div>
+                            <span className="shrink-0 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-slate-300">
+                              {chapter.lessons.length} lessons
+                            </span>
+                          </div>
+
+                          <div className="mt-3 space-y-2">
+                            {chapter.lessons.map((lesson) => {
+                              const selectedLesson = currentLesson?.id === lesson.id;
+                              const completedLesson = completedLessonIds.includes(lesson.id);
+
+                              return (
+                                <div
+                                  key={lesson.id}
+                                  className={`rounded-2xl border p-3 ${
+                                    selectedLesson
+                                      ? "border-aurora-300/70 bg-aurora-500/15"
+                                      : "border-white/10 bg-white/5"
+                                  }`}
+                                >
+                                  <button
+                                    className="block w-full text-left"
+                                    type="button"
+                                    onClick={() => void handleSelectGeneratedLesson(lesson.id)}
+                                    disabled={submitting || streaming}
+                                  >
+                                    <span className="flex items-start justify-between gap-3">
+                                      <span className="text-sm font-semibold text-white">{lesson.title}</span>
+                                      <span className={completedLesson ? "text-xs text-emerald-200" : "text-xs text-slate-400"}>
+                                        {completedLesson ? "Complete" : lesson.duration}
+                                      </span>
+                                    </span>
+                                    {lesson.exercises.length ? (
+                                      <span className="mt-2 block text-xs text-slate-300">
+                                        Exercise: {lesson.exercises[0]}
+                                      </span>
+                                    ) : null}
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
 
                     <div className="grid gap-2 sm:grid-cols-2">
                       <button
