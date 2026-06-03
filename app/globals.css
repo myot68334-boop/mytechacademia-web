@@ -215,6 +215,57 @@ a {
   background: rgba(255, 255, 255, 0.12);
 }
 
+.copy-email {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.copy-email__address {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.copy-email__button {
+  flex: 0 0 auto;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.copy-email__button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.copy-email__toast {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  min-height: 24px;
+  border-radius: 999px;
+  background: rgba(6, 14, 28, 0.92);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.copy-email__toast:not(:empty) {
+  padding: 7px 12px;
+  border: 1px solid rgba(174, 209, 255, 0.2);
+  box-shadow: 0 12px 28px rgba(5, 12, 24, 0.36);
+}
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -1463,17 +1514,104 @@ a {
 }
 
 .site-footer {
-  padding: 32px 0 48px;
-  color: rgba(214, 226, 244, 0.72);
+  padding: 56px 0 42px;
+  color: rgba(214, 226, 244, 0.78);
+  background:
+    linear-gradient(180deg, rgba(8, 15, 29, 0), rgba(8, 15, 29, 0.72)),
+    rgba(8, 15, 29, 0.34);
 }
 
 .site-footer__row {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(260px, 1.3fr) minmax(180px, 0.7fr) minmax(240px, 0.8fr);
+  gap: 32px;
   border-top: 1px solid rgba(176, 209, 255, 0.12);
-  padding-top: 22px;
+  padding-top: 28px;
+}
+
+.site-footer__brand {
+  max-width: 440px;
+}
+
+.site-footer__brand strong {
+  display: block;
+  color: #f8fbff;
+  font-size: 24px;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.site-footer__brand p {
+  margin: 0;
+  color: rgba(226, 236, 250, 0.78);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.site-footer__copyright {
+  margin-top: 18px;
+  color: rgba(214, 226, 244, 0.58);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.site-footer__group {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.site-footer__group > span {
+  color: #8fd3ff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.site-footer__links,
+.site-footer__contact-list {
+  display: grid;
+  gap: 10px;
+}
+
+.site-footer__links a,
+.site-footer__contact-list a {
+  color: rgba(226, 236, 250, 0.78);
+  font-size: 14px;
+  line-height: 1.45;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.site-footer__links a:hover,
+.site-footer__links a:focus-visible,
+.site-footer__contact-list a:hover,
+.site-footer__contact-list a:focus-visible {
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+.site-footer__contact-list .copy-email {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.site-footer__contact-list .copy-email__address {
+  color: rgba(226, 236, 250, 0.78);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.site-footer__contact-list .copy-email__button {
+  min-height: 34px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.site-footer__contact-list .copy-email__toast {
+  left: 0;
+  right: auto;
 }
 
 .project-hero {
@@ -1666,6 +1804,15 @@ a {
   line-height: 1.65;
 }
 
+.booking-form__status {
+  min-height: 22px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
 .page-grid .copy-block h3 {
   margin: 0 0 10px;
   font-size: 24px;
@@ -1824,11 +1971,14 @@ ul.clean-list li::marker {
 
   .site-header__row,
   .section-head,
-  .site-footer__row,
   .deploy-strip,
   .services-section-meta {
     align-items: start;
     flex-direction: column;
+  }
+
+  .site-footer__row {
+    grid-template-columns: 1fr;
   }
 
   .site-header__tools {
@@ -1991,6 +2141,22 @@ ul.clean-list li::marker {
 
   .site-header__tools > .cta-chip {
     width: 100%;
+  }
+
+  .copy-email {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .copy-email__button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .copy-email__toast {
+    left: 0;
+    right: auto;
   }
 
   .hero h1,

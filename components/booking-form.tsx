@@ -17,27 +17,31 @@ type BookingFormCopy = {
 
 export function BookingForm({ copy }: { copy: BookingFormCopy }) {
   const [topic, setTopic] = useState(copy.topicOptions[0] ?? "");
+  const [status, setStatus] = useState<"idle" | "copying" | "success" | "error">("idle");
 
   const options = useMemo(() => copy.topicOptions, [copy.topicOptions]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const lines = [
-      `${copy.name}: ${formData.get("name") ?? ""}`,
-      `${copy.email}: ${formData.get("email") ?? ""}`,
-      `${copy.contact}: ${formData.get("contact") ?? ""}`,
-      `${copy.topic}: ${formData.get("topic") ?? ""}`,
-      `${copy.level}: ${formData.get("level") ?? ""}`,
+      `Name: ${formData.get("name") ?? ""}`,
+      `Email: ${formData.get("email") ?? ""}`,
+      `Topic: ${formData.get("topic") ?? ""}`,
+      `Level: ${formData.get("level") ?? ""}`,
       "",
-      `${copy.message}:`,
+      "Message:",
       `${formData.get("message") ?? ""}`,
     ];
 
-    const href = `mailto:hello@mytechacademia.com?subject=${encodeURIComponent(
-      copy.mailSubject,
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-    window.location.href = href;
+    try {
+      setStatus("copying");
+      await navigator.clipboard.writeText(lines.join("\n"));
+      setStatus("success");
+    } catch (error) {
+      console.error("Unable to copy booking message", error);
+      setStatus("error");
+    }
   }
 
   return (
@@ -79,10 +83,24 @@ export function BookingForm({ copy }: { copy: BookingFormCopy }) {
         <textarea name="message" rows={5} required />
       </label>
 
-      <button className="cta-chip cta-chip--solid booking-form__submit" type="submit">
+      <button
+        aria-describedby="booking-form-status"
+        className="cta-chip cta-chip--solid booking-form__submit"
+        disabled={status === "copying"}
+        type="submit"
+      >
         {copy.submit}
       </button>
       <p className="booking-form__note">{copy.note}</p>
+      <p
+        aria-live="polite"
+        className="booking-form__status"
+        id="booking-form-status"
+        role="status"
+      >
+        {status === "success" ? "Message copied. Please send it via email or chat." : ""}
+        {status === "error" ? "Could not copy message. Please try again." : ""}
+      </p>
     </form>
   );
 }

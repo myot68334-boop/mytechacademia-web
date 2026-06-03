@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
+import { CopyEmail } from "./CopyEmail";
 import type { Lang } from "../lib/i18n";
 import { getLang, withLang } from "../lib/i18n";
 
@@ -11,8 +12,11 @@ const navCopy = {
     eyebrow: "Digital Product Studio",
     home: "Home",
     projects: "Projects",
+    courses: "Courses",
+    pricing: "Pricing",
     about: "About",
     contact: "Contact",
+    support: "Support",
     getInTouch: "Get in Touch",
     footerTagline: "A home for learning, AI, and digital products.",
     privacy: "Privacy",
@@ -22,8 +26,11 @@ const navCopy = {
     eyebrow: "デジタルプロダクトスタジオ",
     home: "ホーム",
     projects: "プロジェクト",
+    courses: "コース",
+    pricing: "料金",
     about: "紹介",
     contact: "お問い合わせ",
+    support: "サポート",
     getInTouch: "相談する",
     footerTagline: "学び、AI、デジタルプロダクトのための拠点。",
     privacy: "プライバシー",
@@ -33,8 +40,11 @@ const navCopy = {
     eyebrow: "ဒစ်ဂျစ်တယ်ပရိုဒတ် စတူဒီယို",
     home: "ပင်မစာမျက်နှာ",
     projects: "ထုတ်ကုန်ပစ္စည်းများ",
+    courses: "သင်တန်းများ",
+    pricing: "စျေးနှုန်း",
     about: "မိတ်ဆက်",
     contact: "ဆက်သွယ်ရန်",
+    support: "အကူအညီ",
     getInTouch: "တိုင်ပင်ဆွေးနွေးရန်",
     footerTagline: "ပညာရေး၊ AI နှင့် ဒစ်ဂျစ်တယ်ပရိုဒတ်များအတွက် Platform",
     privacy: "ကိုယ်ရေးအချက်အလက်မူဝါဒ",
@@ -45,11 +55,21 @@ const navCopy = {
 const navItems = [
   { href: "/", key: "home" },
   { href: "/projects", key: "projects" },
+  { href: "/courses", key: "courses" },
+  { href: "/pricing", key: "pricing" },
   { href: "/work-japanese-go", label: "WorkJapaneseGO" },
   { href: "/zaycho", label: "ZayCho" },
   { href: "/tech-academia", label: "Tech Academia" },
   { href: "/about", key: "about" },
   { href: "/contact", key: "contact" },
+] as const;
+
+const footerLinks = [
+  { href: "/", label: "Home" },
+  { href: "/courses", label: "Courses" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/contact", label: "Contact" },
+  { href: "/support", label: "Support" },
 ] as const;
 
 function langHref(pathname: string, lang: Lang) {
@@ -107,16 +127,27 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       {children}
       <footer className="site-footer">
         <div className="container site-footer__row">
-          <div>
+          <div className="site-footer__brand">
             <strong>My Tech Academia</strong>
-            <div>{copy.footerTagline}</div>
+            <p>AI-powered learning platform for programming, engineering, and digital skills.</p>
+            <div className="site-footer__copyright">© 2026 My Tech Academia. All rights reserved.</div>
           </div>
-          <div className="nav-links">
-            <Link href={withLang("/projects", lang)}>{copy.projects}</Link>
-            <Link href={withLang("/about", lang)}>{copy.about}</Link>
-            <Link href={withLang("/contact", lang)}>{copy.contact}</Link>
-            <Link href={withLang("/privacy", lang)}>{copy.privacy}</Link>
-            <Link href={withLang("/terms", lang)}>{copy.terms}</Link>
+          <div className="site-footer__group">
+            <span>Navigate</span>
+            <nav className="site-footer__links" aria-label="Footer navigation">
+              {footerLinks.map((item) => (
+                <Link key={item.href} href={withLang(item.href, lang)}>
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div className="site-footer__group">
+            <span>Contact</span>
+            <div className="site-footer__contact-list">
+              <CopyEmail email="hello@mytechacademia.com" label="Copy Email" />
+              <CopyEmail email="support@mytechacademia.com" label="Copy Email" />
+            </div>
           </div>
         </div>
       </footer>
