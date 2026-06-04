@@ -72,6 +72,8 @@ const footerLinks = [
   { href: "/support", label: "Support" },
 ] as const;
 
+const helloEmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@mytechacademia.com";
+
 function langHref(pathname: string, lang: Lang) {
   return lang === "en" ? pathname || "/" : withLang(pathname || "/", lang);
 }
@@ -145,7 +147,15 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           <div className="site-footer__group">
             <span>Contact</span>
             <div className="site-footer__contact-list">
-              <CopyEmail email="hello@mytechacademia.com" label="hello@mytechacademia.com" />
+              <a
+                aria-label="Open email compose page for hello@mytechacademia.com"
+                className="cta-chip cta-chip--solid"
+                href={helloEmailUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                hello@mytechacademia.com
+              </a>
               <CopyEmail email="support@mytechacademia.com" label="support@mytechacademia.com" />
             </div>
           </div>

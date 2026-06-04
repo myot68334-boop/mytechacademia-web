@@ -1,6 +1,7 @@
-import { CopyEmail } from "@/components/CopyEmail";
 import { BookingForm } from "../../components/booking-form";
 import { getLang } from "../../lib/i18n";
+
+const helloEmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@mytechacademia.com";
 
 const copy = {
   en: {
@@ -130,10 +131,15 @@ export default async function ContactPage({
             <h3>{t.best}</h3>
             <p className="contact-note">{t.note}</p>
             <div className="project-actions">
-              <div className="flex items-center gap-3">
-                <span>hello@mytechacademia.com</span>
-                <CopyEmail email="hello@mytechacademia.com" label="hello@mytechacademia.com" />
-              </div>
+              <a
+                aria-label="Open email compose page for hello@mytechacademia.com"
+                className="cta-chip cta-chip--solid"
+                href={helloEmailUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                hello@mytechacademia.com
+              </a>
             </div>
           </div>
         </div>
