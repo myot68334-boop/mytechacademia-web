@@ -1,5 +1,6 @@
-import { CopyEmail } from "../../components/CopyEmail";
 import { getLang } from "../../lib/i18n";
+
+const supportEmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=support@mytechacademia.com";
 
 export default async function SupportPage({
   searchParams,
@@ -23,7 +24,15 @@ export default async function SupportPage({
               <div>
                 <span className="block text-sm font-semibold uppercase tracking-[0.18em] text-sky-200">Support email</span>
               </div>
-              <CopyEmail email="support@mytechacademia.com" label="Copy Email" />
+              <a
+                aria-label="Open email compose page for support@mytechacademia.com"
+                className="cta-chip cta-chip--solid"
+                href={supportEmailUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                support@mytechacademia.com
+              </a>
             </div>
           </div>
         </div>

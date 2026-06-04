@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import { CopyEmail } from "./CopyEmail";
 import type { Lang } from "../lib/i18n";
 import { getLang, withLang } from "../lib/i18n";
 
@@ -73,6 +72,7 @@ const footerLinks = [
 ] as const;
 
 const helloEmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@mytechacademia.com";
+const supportEmailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=support@mytechacademia.com";
 
 function langHref(pathname: string, lang: Lang) {
   return lang === "en" ? pathname || "/" : withLang(pathname || "/", lang);
@@ -156,7 +156,15 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               >
                 hello@mytechacademia.com
               </a>
-              <CopyEmail email="support@mytechacademia.com" label="support@mytechacademia.com" />
+              <a
+                aria-label="Open email compose page for support@mytechacademia.com"
+                className="cta-chip cta-chip--solid"
+                href={supportEmailUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                support@mytechacademia.com
+              </a>
             </div>
           </div>
         </div>
