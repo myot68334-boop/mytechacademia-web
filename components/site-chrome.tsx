@@ -145,8 +145,8 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           <div className="site-footer__group">
             <span>Contact</span>
             <div className="site-footer__contact-list">
-              <CopyEmail email="hello@mytechacademia.com" label="Copy Email" />
-              <CopyEmail email="support@mytechacademia.com" label="Copy Email" />
+              <CopyEmail email="hello@mytechacademia.com" label="hello@mytechacademia.com" />
+              <CopyEmail email="support@mytechacademia.com" label="support@mytechacademia.com" />
             </div>
           </div>
         </div>
